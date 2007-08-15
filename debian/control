@@ -1,0 +1,51 @@
+Source: exempi
+Section: libs
+Priority: optional
+Maintainer: Asheesh Laroia <asheesh@asheesh.org>
+Uploaders: Michael Biebl <biebl@debian.org>
+Build-Depends: debhelper (>> 5.0.0), cdbs (>= 0.4.30), libboost-dev (>= 1.33), libexpat1-dev
+Standards-Version: 3.7.2
+XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/exempi/trunk
+XS-Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/exempi/trunk
+
+Package: libexempi2
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: A library to parse XMP metadata (Library)
+ Exempi is a library to parse XMP metadata as defined by the 
+ specification.
+ .
+ XMP (Extensible Metadata Platform) facilitates embedding metadata in files
+ using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
+ and many image formats, though it is designed to support nearly any file type.
+ .
+  Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
+
+Package: libexempi-dev
+Section: libdevel
+Depends: libexempi2 (= ${binary:Version})
+Architecture: any
+Description: A library to parse XMP metadata (Development files)
+ Exempi is a library to parse XMP metadata as defined by the 
+ specification.
+ .
+ XMP (Extensible Metadata Platform) facilitates embedding metadata in files
+ using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
+ and many image formats, though it is designed to support nearly any file type.
+ .
+  Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
+
+Package: libexempi2-dbg
+Architecture: any
+Depends: libexempi2 (= ${binary:Version})
+Description: A library to parse XMP metadata (Debug files)
+ Exempi is a library to parse XMP metadata as defined by the 
+ specification.
+ .
+ XMP (Extensible Metadata Platform) facilitates embedding metadata in files
+ using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
+ and many image formats, though it is designed to support nearly any file type.
+ .
+  Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
+
