@@ -1,3 +1,9 @@
+exempi (1.99.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 26 Aug 2007 00:18:41 +0200
+
 exempi (1.99.3-1) unstable; urgency=low
 
   * Initial release. (Closes: #438166)
