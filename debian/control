@@ -5,10 +5,11 @@ Maintainer: Asheesh Laroia <asheesh@asheesh.org>
 Uploaders: Michael Biebl <biebl@debian.org>
 Build-Depends: debhelper (>> 5.0.0), cdbs (>= 0.4.30), libboost-dev (>= 1.33), libexpat1-dev
 Standards-Version: 3.7.2
-XS-Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/exempi/trunk
-XS-Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/exempi/trunk
+Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/exempi/trunk
+Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/exempi/trunk
+Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
 
-Package: libexempi2
+Package: libexempi3
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}
@@ -19,12 +20,10 @@ Description: A library to parse XMP metadata (Library)
  XMP (Extensible Metadata Platform) facilitates embedding metadata in files
  using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
  and many image formats, though it is designed to support nearly any file type.
- .
-  Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
 
 Package: libexempi-dev
 Section: libdevel
-Depends: libexempi2 (= ${binary:Version})
+Depends: libexempi3 (= ${binary:Version})
 Architecture: any
 Description: A library to parse XMP metadata (Development files)
  Exempi is a library to parse XMP metadata as defined by the 
@@ -33,12 +32,10 @@ Description: A library to parse XMP metadata (Development files)
  XMP (Extensible Metadata Platform) facilitates embedding metadata in files
  using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
  and many image formats, though it is designed to support nearly any file type.
- .
-  Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
 
-Package: libexempi2-dbg
+Package: libexempi3-dbg
 Architecture: any
-Depends: libexempi2 (= ${binary:Version})
+Depends: libexempi3 (= ${binary:Version})
 Description: A library to parse XMP metadata (Debug files)
  Exempi is a library to parse XMP metadata as defined by the 
  specification.
@@ -46,6 +43,4 @@ Description: A library to parse XMP metadata (Debug files)
  XMP (Extensible Metadata Platform) facilitates embedding metadata in files
  using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
  and many image formats, though it is designed to support nearly any file type.
- .
-  Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
 

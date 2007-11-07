@@ -1,3 +1,13 @@
+exempi (1.99.5-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control
+    - Use the new "Homepage:" field to specify the upstream URL.
+    - The Vcs-* fields are now officially supported, so remove the XS- prefix.
+  * SONAME bump as ABI has changed. Rename package libexempi2 to libexempi3. 
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 07 Nov 2007 15:29:59 +0100
+
 exempi (1.99.4-1) unstable; urgency=low
 
   * New upstream release.
