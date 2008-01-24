@@ -1,0 +1,13 @@
+diff --git a/source/XMPFiles/FormatSupport/GIF_Support.cpp b/source/XMPFiles/FormatSupport/GIF_Support.cpp
+index 37149ad..5589f10 100644
+--- a/source/XMPFiles/FormatSupport/GIF_Support.cpp
++++ b/source/XMPFiles/FormatSupport/GIF_Support.cpp
+@@ -64,7 +64,7 @@ namespace GIF_Support
+ 		long headerSize;
+ 		long tableSize = 0;
+ 		long bytesPerColor = 0;
+-		unsigned char buffer[256];
++		unsigned char buffer[768];
+ 		
+ 		headerSize = 0;
+ 		bytesRead = LFA_Read ( fileRef, buffer, GIF_SIGNATURE_LEN );

@@ -1,3 +1,24 @@
+exempi (1.99.7-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Adds missing #includes which fixes FTBFS with GCC 4.3. (Closes: #456087)
+  * debian/control
+    - Bump Standards-Version to 3.7.3. No further changes required.
+    - Drop Build-Depends on libboost-dev.
+    - Make the -dbg package be Priority: extra.
+  * debian/rules
+    - Disable compilation of the unit tests.
+  * debian/patches/01-configure_unittest.patch
+    - Make compilation of the unit tests (which require boost) optional.
+      Patch is pulled from upstream git.
+  * debian/patches/02-buffer_overflow_gif_header.patch
+    - Fix a buffer overflow in the ReadHeader() function when reading GIF
+      images. This poses a security risk as it allows arbitrary code
+      execution. Upload with urgency medium. (Closes: #454297)
+      Thanks to Sjoerd Simmons for the help tracking this bug down.
+
+ -- Michael Biebl <biebl@debian.org>  Thu, 24 Jan 2008 01:39:45 +0100
+
 exempi (1.99.5-1) unstable; urgency=low
 
   * New upstream release.
