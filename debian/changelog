@@ -1,3 +1,11 @@
+exempi (1.99.9-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control
+    - Remove leading article from short package description.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 02 Feb 2008 04:54:26 +0100
+
 exempi (1.99.8-1) unstable; urgency=low
 
   * New upstream release.

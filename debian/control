@@ -13,7 +13,7 @@ Package: libexempi3
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}
-Description: A library to parse XMP metadata (Library)
+Description: library to parse XMP metadata (Library)
  Exempi is a library to parse XMP metadata as defined by the 
  specification.
  .
@@ -25,7 +25,7 @@ Package: libexempi-dev
 Section: libdevel
 Depends: libexempi3 (= ${binary:Version})
 Architecture: any
-Description: A library to parse XMP metadata (Development files)
+Description: library to parse XMP metadata (Development files)
  Exempi is a library to parse XMP metadata as defined by the 
  specification.
  .
@@ -37,7 +37,7 @@ Package: libexempi3-dbg
 Architecture: any
 Priority: extra
 Depends: libexempi3 (= ${binary:Version})
-Description: A library to parse XMP metadata (Debug files)
+Description: library to parse XMP metadata (Debug files)
  Exempi is a library to parse XMP metadata as defined by the 
  specification.
  .
