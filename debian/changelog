@@ -1,3 +1,9 @@
+exempi (2.0.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Michael Biebl <biebl@debian.org>  Wed, 02 Apr 2008 06:21:58 +0200
+
 exempi (1.99.9-1) unstable; urgency=low
 
   * New upstream release.
