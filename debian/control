@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Asheesh Laroia <asheesh@asheesh.org>
 Uploaders: Michael Biebl <biebl@debian.org>
 Build-Depends: debhelper (>> 5.0.0), cdbs (>= 0.4.30), libexpat1-dev
-Standards-Version: 3.7.3
+Standards-Version: 3.8.0
 Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/exempi/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/exempi/trunk
 Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
