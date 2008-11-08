@@ -1,0 +1,25 @@
+Add missing includes to fix FTBFS with GCC 4.4. See Bug#504944
+Index: exempi-2.0.2/samples/source/XMPFilesCoverage.cpp
+===================================================================
+--- exempi-2.0.2.orig/samples/source/XMPFilesCoverage.cpp	2008-11-08 15:20:59.000000000 +0100
++++ exempi-2.0.2/samples/source/XMPFilesCoverage.cpp	2008-11-08 15:21:44.000000000 +0100
+@@ -3,6 +3,7 @@
+ #include <stdexcept>
+ #include <errno.h>
+ #include <time.h>
++#include <cstdio>
+ #include <cstring>
+ 
+ #define TXMP_STRING_TYPE std::string
+Index: exempi-2.0.2/source/XMPFiles/XMPFiles_Impl.cpp
+===================================================================
+--- exempi-2.0.2.orig/source/XMPFiles/XMPFiles_Impl.cpp	2008-11-08 15:20:51.000000000 +0100
++++ exempi-2.0.2/source/XMPFiles/XMPFiles_Impl.cpp	2008-11-08 15:21:23.000000000 +0100
+@@ -9,6 +9,7 @@
+ 
+ #include "XMPFiles_Impl.hpp"
+ 
++#include <stdio.h>
+ #if XMP_MacBuild
+ 	#include <Files.h>
+ #elif XMP_WinBuild

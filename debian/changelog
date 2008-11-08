@@ -1,3 +1,19 @@
+exempi (2.0.2-2) unstable; urgency=low
+
+  * Switch patch management system to quilt. 
+  * debian/control
+    - Add Build-Depends on quilt.
+  * debian/rules
+    - Include patchsys-quilt.mk cdbs rules file.
+  * debian/README.source
+    - Document the usage of quilt as patch management system and refer to the
+      quilt documentation for further information.
+  * debian/patches/01-gcc_4.4_missing_includes.patch
+    - Add missing includes to fix FTBFS with GCC 4.4. (Closes: 504944)
+      Thanks to Martin Michlmayr for the patch.
+
+ -- Michael Biebl <biebl@debian.org>  Sat, 08 Nov 2008 15:30:52 +0100
+
 exempi (2.0.2-1) unstable; urgency=low
 
   * New upstream release. 
