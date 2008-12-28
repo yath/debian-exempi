@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer: Asheesh Laroia <asheesh@asheesh.org>
 Uploaders: Michael Biebl <biebl@debian.org>
-Build-Depends: debhelper (>> 5.0.0), cdbs (>= 0.4.30), libexpat1-dev, quilt
+Build-Depends: debhelper (>> 5.0.0), cdbs (>= 0.4.30), libexpat1-dev, quilt, zlib1g-dev
 Standards-Version: 3.8.0
 Vcs-Svn: svn://svn.debian.org/svn/collab-maint/ext-maint/exempi/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/ext-maint/exempi/trunk
@@ -12,36 +12,36 @@ Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
 Package: libexempi3
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: library to parse XMP metadata (Library)
- Exempi is a library to parse XMP metadata as defined by the 
+ Exempi is a library to parse XMP metadata as defined by the
  specification.
  .
  XMP (Extensible Metadata Platform) facilitates embedding metadata in files
- using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
+ using a subset of RDF. Most notably XMP supports embedding metadata in PDF
  and many image formats, though it is designed to support nearly any file type.
 
 Package: libexempi-dev
 Section: libdevel
-Depends: libexempi3 (= ${binary:Version})
+Depends: libexempi3 (= ${binary:Version}), ${misc:Depends}
 Architecture: any
 Description: library to parse XMP metadata (Development files)
- Exempi is a library to parse XMP metadata as defined by the 
+ Exempi is a library to parse XMP metadata as defined by the
  specification.
  .
  XMP (Extensible Metadata Platform) facilitates embedding metadata in files
- using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
+ using a subset of RDF. Most notably XMP supports embedding metadata in PDF
  and many image formats, though it is designed to support nearly any file type.
 
 Package: libexempi3-dbg
 Architecture: any
 Priority: extra
-Depends: libexempi3 (= ${binary:Version})
+Depends: libexempi3 (= ${binary:Version}), ${misc:Depends}
 Description: library to parse XMP metadata (Debug files)
- Exempi is a library to parse XMP metadata as defined by the 
+ Exempi is a library to parse XMP metadata as defined by the
  specification.
  .
  XMP (Extensible Metadata Platform) facilitates embedding metadata in files
- using a subset of RDF. Most notably XMP supports embedding metadata in PDF 
+ using a subset of RDF. Most notably XMP supports embedding metadata in PDF
  and many image formats, though it is designed to support nearly any file type.
 

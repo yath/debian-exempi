@@ -1,25 +1,37 @@
-Add missing includes to fix FTBFS with GCC 4.4. See Bug#504944
-Index: exempi-2.0.2/samples/source/XMPFilesCoverage.cpp
+# Add missing includes to fix FTBFS with GCC 4.4. See Bug#504944
+Index: exempi-2.1.0/exempi/tests/utils.cpp
 ===================================================================
---- exempi-2.0.2.orig/samples/source/XMPFilesCoverage.cpp	2008-11-08 15:20:59.000000000 +0100
-+++ exempi-2.0.2/samples/source/XMPFilesCoverage.cpp	2008-11-08 15:21:44.000000000 +0100
-@@ -3,6 +3,7 @@
- #include <stdexcept>
+--- exempi-2.1.0.orig/exempi/tests/utils.cpp	2008-12-28 20:39:28.000000000 +0000
++++ exempi-2.1.0/exempi/tests/utils.cpp	2008-12-28 20:43:16.000000000 +0000
+@@ -34,6 +34,7 @@
+  * OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
++#include <cstdio>
+ 
+ #include <boost/test/unit_test.hpp>
+ 
+Index: exempi-2.1.0/samples/source/XMPFilesCoverage.cpp
+===================================================================
+--- exempi-2.1.0.orig/samples/source/XMPFilesCoverage.cpp	2008-12-28 20:39:28.000000000 +0000
++++ exempi-2.1.0/samples/source/XMPFilesCoverage.cpp	2008-12-28 20:43:16.000000000 +0000
+@@ -17,6 +17,7 @@
  #include <errno.h>
  #include <time.h>
-+#include <cstdio>
  #include <cstring>
++#include <cstdio>
  
  #define TXMP_STRING_TYPE std::string
-Index: exempi-2.0.2/source/XMPFiles/XMPFiles_Impl.cpp
+ #define XMP_INCLUDE_XMPFILES 1
+Index: exempi-2.1.0/source/common/XML_Node.cpp
 ===================================================================
---- exempi-2.0.2.orig/source/XMPFiles/XMPFiles_Impl.cpp	2008-11-08 15:20:51.000000000 +0100
-+++ exempi-2.0.2/source/XMPFiles/XMPFiles_Impl.cpp	2008-11-08 15:21:23.000000000 +0100
-@@ -9,6 +9,7 @@
+--- exempi-2.1.0.orig/source/common/XML_Node.cpp	2008-12-28 20:39:28.000000000 +0000
++++ exempi-2.1.0/source/common/XML_Node.cpp	2008-12-28 20:43:16.000000000 +0000
+@@ -11,6 +11,7 @@
  
- #include "XMPFiles_Impl.hpp"
+ #include <string.h>
+ #include <cstring>
++#include <cstdio>
+ #include <map>
  
-+#include <stdio.h>
- #if XMP_MacBuild
- 	#include <Files.h>
- #elif XMP_WinBuild
+ // ! Can't include XMP..._Impl.hpp - used by both Core and Files.

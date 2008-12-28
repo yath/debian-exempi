@@ -1,3 +1,16 @@
+exempi (2.1.0-1) experimental; urgency=low
+
+  * New upstream release.
+  * debian/control
+    - Add Build-Depends on zlib1g-dev.
+    - Add ${misc:Depends} to all binary packages.
+  * debian/patches/01-gcc_4.4_missing_includes.patch
+    - Refreshed and updated to the latest code changes.
+  * debian/libexempi3.shlibs 
+    - Add shlibs file and set it to (>= 2.1.0) due to API additions.
+
+ -- Michael Biebl <biebl@debian.org>  Sun, 28 Dec 2008 21:56:13 +0100
+
 exempi (2.0.2-2) unstable; urgency=low
 
   * Switch patch management system to quilt. 
