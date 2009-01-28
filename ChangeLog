@@ -1,3 +1,31 @@
+2008-01-23  Hubert Figuiere  <hub@figuiere.net>
+
+	* source/XMPFiles/FormatSupport/GIF_Support.cpp (ReadHeader): Fix
+	a nasty buffer overflow. Closes Debian #454297. Closes Gnome #484105
+	Patch by Michael Biebl <biebl@debian.org>
+	(ReadBlock): Fix another possible overflow similar to the one in
+	ReadHeader()
+
+2008-01-22  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/xmp.h: Fix a typo. (Closes #14200)
+
+2008-01-18  Hubert Figuiere  <hub@figuiere.net>
+
+	* source/XMPFiles/Makefile.am: Disable strict aliasing. This fix
+	some nasty warning.
+
+2008-01-13  Hubert Figuiere  <hub@figuiere.net>
+
+	* configure.ac: Allow disabling unittest if you
+	don't have boost (Closes #13712)
+
+	* autogen.sh: Don't run autoheader. (Closes #14049)
+
+	* autogen.sh: re-order commands in autogens.sh
+
+=== 1.99.7 ===
+	
 2008-01-12  Hubert Figuiere  <hub@figuiere.net>
 
 	* configure.ac: Fix the soversion. A mix-up occured in the last
