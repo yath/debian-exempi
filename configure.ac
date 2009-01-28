@@ -1,6 +1,6 @@
 AC_PREREQ(2.50)
 AC_INIT(exempi/xmp.h)
-AM_INIT_AUTOMAKE(exempi, 1.99.5)
+AM_INIT_AUTOMAKE(exempi, 1.99.7)
 AM_MAINTAINER_MODE
 
 
@@ -33,9 +33,11 @@ dnl 1.99.3 is the revision 5 3 0
 dnl 1.99.4 is the revision 6 4 0
 dnl ABI breakage reset major to 3
 dnl 1.99.5 is the revision 3.0.0
+dnl 1.99.6 is the revision 3.1.0 WHICH IS WRONG!!!
+dnl 1.99.7 is the revision 4.1.0
 AC_SUBST([EXEMPI_REVISION], [0])
-AC_SUBST([EXEMPI_AGE],      [0])
-AC_SUBST([EXEMPI_CURRENT],  [3])
+AC_SUBST([EXEMPI_AGE],      [1])
+AC_SUBST([EXEMPI_CURRENT],  [4])
 AC_SUBST([EXEMPI_CURRENT_MIN],
          [`expr $EXEMPI_CURRENT - $EXEMPI_AGE`])
 AC_SUBST([EXEMPI_VERSION_INFO],
@@ -61,13 +63,60 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_LIBTOOL
 
+AC_ARG_WITH(darwinports,[  --with-darwinports     add /opt/local/... to CPP/LDFLAGS (Mac OSX)],[
+        if test "x$withval" != "xno"; then
+                CPPFLAGS="$CPPFLAGS -I/opt/local/include"
+                LDFLAGS="$LDFLAGS -L/opt/local/lib"
+		CC=g++
+        fi
+])
+AC_ARG_WITH(fink,[  --with-fink          add /sw/... to CPP/LDFLAGS (Mac OSX)],[
+        if test "x$withval" != "xno"; then
+                CPPFLAGS="$CPPFLAGS -I/sw/include"
+                LDFLAGS="$LDFLAGS -L/sw/lib"
+		CC=g++
+        fi
+])
+
+
 AC_CHECK_HEADER(expat.h, ,
 	 AC_MSG_ERROR([expat headers missing]))
 AC_CHECK_HEADER(iconv.h, ,
 	 AC_MSG_ERROR([iconv headers missing]))
 
-AX_BOOST_BASE([1.33.1])
-AX_BOOST_UNIT_TEST_FRAMEWORK
+BOOST_REQUIRE([1.33.0])
+BOOST_TEST([mt-s])
+
+case $build_vendor in
+	apple)
+		EXEMPI_PLATFORM_DEF=MAC_ENV
+		CPPFLAGS="$CPPFLAGS -I/Developer/Headers/FlatCarbon"
+		LDFLAGS="$LDFLAGS -framework CoreServices"
+		;;
+	*)
+		EXEMPI_PLATFORM_DEF=UNIX_ENV
+		;;
+esac
+
+AC_SUBST(EXEMPI_PLATFORM_DEF)
+
+AM_CONDITIONAL(WITH_UNIT_TEST, test "x$BOOST_CPPFLAGS" != "x")
+
+dnl Check for valgrind (optional) for make check.
+AC_CHECK_PROG(VALGRIND, valgrind, valgrind)
+AC_CHECK_HEADERS(valgrind/memcheck.h)
+if test "$VALGRIND" = ""; then
+        AC_MSG_WARN([Valgrind is missing. checks will run without])
+fi
+if test "$VALGRIND" != ""; then
+dnl due to stupid m4 I had to double the [ and ] in the regexp
+        vg_ver=`valgrind --version | sed -e  's/.*-\([[0-9]]\)\.[[0-9]].*/\1/'`
+        VALGRIND="$VALGRIND --tool=memcheck --leak-check=yes --num-callers=10"
+        if test "$vg_ver" != "3" ; then
+           VALGRIND="$VALGRIND --logfile-fd=-1"
+        fi
+fi
+AC_SUBST(VALGRIND)
 
 
 AC_OUTPUT([
@@ -93,3 +142,12 @@ exempi/doc/Doxyfile
 exempi/tests/Makefile
 exempi/exempi-2.0.pc
 ])
+
+
+echo "
+Defines:
+
+   EXEMPI_PLATFORM_DEF = $EXEMPI_PLATFORM_DEF
+   CPPFLAGS            = $CPPFLAGS
+   LDFLAGS             = $LDFLAGS
+"

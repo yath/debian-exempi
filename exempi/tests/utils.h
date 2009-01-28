@@ -1,5 +1,5 @@
 /*
- * exempi - xmpconsts.h
+ * exempi - utils.h
  *
  * Copyright (C) 2007 Hubert Figuiere
  * All rights reserved.
@@ -36,36 +36,36 @@
 
 
 
-#ifndef _EXEMPI_XMP_CONSTS_H_
-#define _EXEMPI_XMP_CONSTS_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ifndef __TEST_UTILS_H__
+#define __TEST_UTILS_H__
 
-extern const char NS_XMP_META[];
-extern const char NS_RDF[];
-extern const char NS_EXIF[];
-extern const char NS_TIFF[];
-extern const char NS_XAP[];
-extern const char NS_XAP_RIGHTS[];
-extern const char NS_DC[];
-extern const char NS_EXIF_AUX[];
-extern const char NS_CRS[];
-extern const char NS_LIGHTROOM[];
-extern const char NS_PHOTOSHOP[];
-extern const char NS_CAMERA_RAW_SETTINGS[];
-extern const char NS_CAMERA_RAW_SAVED_SETTINGS[];
-extern const char NS_IPTC4XMP[];
-extern const char NS_TPG[];
-extern const char NS_DIMENSIONS_TYPE[];
-/** Creative Commons namespace */
-extern const char NS_CC[];
+#include <string>
+
+#include <boost/scoped_ptr.hpp>
+
+extern std::string g_testfile;
+extern std::string g_src_testdir;
+
+void prepare_test(int argc, char * argv[], const char * filename);
+
+class LeakTracker
+{
+public:
+	LeakTracker();
+	~LeakTracker();
+/** return false if there is NO leak. Will print on stdout */
+	int check_leaks();
+	int check_errors();
+private:
+	int m_leaks;
+	int m_dubious;
+	int m_reachable;
+	int m_suppressed;
+	int m_errors;
+};
 
 
-
-#ifdef __cplusplus
-}
-#endif
+extern boost::scoped_ptr<LeakTracker> g_lt;
 
 #endif

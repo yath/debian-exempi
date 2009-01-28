@@ -36,18 +36,19 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <string>
 
 #include <boost/static_assert.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
+#include "utils.h"
 #include "xmpconsts.h"
 #include "xmp.h"
 
 using boost::unit_test::test_suite;
 
-std::string g_testfile;
 
 void test_write_new_property()
 {
@@ -89,6 +90,35 @@ void test_write_new_property()
 	XmpStringPtr the_prop = xmp_string_new();
 	BOOST_CHECK(xmp_get_property(xmp, NS_CC, "License", the_prop, NULL));
 	BOOST_CHECK_EQUAL(strcmp("Foo", xmp_string_cstr(the_prop)),	0); 
+
+	XmpDateTime the_dt;
+	the_dt.year = 2005;
+	the_dt.month = 12;
+	the_dt.day = 25;
+	the_dt.hour = 12;
+	the_dt.minute = 42;
+	the_dt.second = 42;
+	the_dt.tzSign = XMP_TZ_UTC;
+	the_dt.tzHour = 0;
+	the_dt.tzMinute = 0;
+	the_dt.nanoSecond = 0;
+	BOOST_CHECK(xmp_set_property_date(xmp, NS_EXIF, "DateTimeOriginal", 
+									  &the_dt, 0));	
+
+	BOOST_CHECK(xmp_get_property(xmp, NS_EXIF, "DateTimeOriginal", 
+								 the_prop, NULL));
+	BOOST_CHECK_EQUAL(strcmp("2005-12-25T12:42:42Z", 
+							 xmp_string_cstr(the_prop)), 0); 	
+
+	XmpDateTime the_dt2;
+	BOOST_CHECK(xmp_get_property_date(xmp, NS_EXIF, "DateTimeOriginal", 
+									  &the_dt2, NULL));
+
+	BOOST_CHECK(the_dt2.year == 2005);
+	BOOST_CHECK(the_dt2.minute == 42);
+	BOOST_CHECK(the_dt2.tzSign == XMP_TZ_UTC);
+
+
 	xmp_string_free(the_prop);
 
 	BOOST_CHECK(xmp_free(xmp));
@@ -97,6 +127,9 @@ void test_write_new_property()
 	fclose(f);
 
 	xmp_terminate();
+
+	BOOST_CHECK(!g_lt->check_leaks());
+	BOOST_CHECK(!g_lt->check_errors());
 }
 
 
@@ -115,6 +148,7 @@ void test_serialize()
 
 	BOOST_CHECK(rlen == len);
 	BOOST_CHECK(len != 0);
+	buffer[rlen] = 0;
 
 	BOOST_CHECK(xmp_init());
 
@@ -140,6 +174,9 @@ void test_serialize()
 	fclose(f);
 
 	xmp_terminate();
+
+	BOOST_CHECK(!g_lt->check_leaks());
+	BOOST_CHECK(!g_lt->check_errors());
 }
 
 
@@ -232,14 +269,77 @@ void test_exempi()
 	
 	BOOST_CHECK(xmp_delete_property(xmp, NS_DC, "creator[3]"));
 	BOOST_CHECK_EQUAL(xmp_has_property(xmp, NS_DC, "creator[3]"), false);
+
+
+	BOOST_CHECK(xmp_get_property(xmp, NS_EXIF, "DateTimeOriginal", 
+											the_prop, NULL));
+	BOOST_CHECK_EQUAL(strcmp("2006-12-07T23:20:43-05:00", 
+							 xmp_string_cstr(the_prop)), 0); 
 	
 	xmp_string_free(the_prop);
+
+	// testing date time get
+	XmpDateTime the_dt;
+	bool ret;
+	BOOST_CHECK(ret = xmp_get_property_date(xmp, NS_EXIF, "DateTimeOriginal", 
+											&the_dt, NULL));
+	BOOST_CHECK(the_dt.year == 2006);
+	BOOST_CHECK(the_dt.minute == 20);
+	BOOST_CHECK(the_dt.tzSign == XMP_TZ_WEST);
+
+
+	// testing float get set
+	double float_value = 0.0;
+	BOOST_CHECK(xmp_get_property_float(xmp, NS_CAMERA_RAW_SETTINGS, 
+									   "SharpenRadius", &float_value, NULL));
+	BOOST_CHECK_EQUAL(float_value, 1.0);
+	BOOST_CHECK(xmp_set_property_float(xmp, NS_CAMERA_RAW_SETTINGS, 
+									   "SharpenRadius", 2.5, 0));
+	BOOST_CHECK(xmp_get_property_float(xmp, NS_CAMERA_RAW_SETTINGS, 
+									   "SharpenRadius", &float_value, NULL));
+	BOOST_CHECK_EQUAL(float_value, 2.5);
+	
+
+	// testing bool get set
+	bool bool_value = true;
+	BOOST_CHECK(xmp_get_property_bool(xmp, NS_CAMERA_RAW_SETTINGS, 
+									   "AlreadyApplied", &bool_value, NULL));
+	BOOST_CHECK_EQUAL(bool_value, false);
+	BOOST_CHECK(xmp_set_property_bool(xmp, NS_CAMERA_RAW_SETTINGS, 
+									   "AlreadyApplied", true, 0));
+	BOOST_CHECK(xmp_get_property_bool(xmp, NS_CAMERA_RAW_SETTINGS, 
+									   "AlreadyApplied", &bool_value, NULL));
+	BOOST_CHECK_EQUAL(bool_value, true);	
+
+	// testing int get set
+	int32_t value = 0;
+	BOOST_CHECK(xmp_get_property_int32(xmp, NS_EXIF, "MeteringMode",
+									   &value, NULL));
+	BOOST_CHECK_EQUAL(value, 5);
+	BOOST_CHECK(xmp_set_property_int32(xmp, NS_EXIF, "MeteringMode",
+									   10, 0));
+	int64_t valuelarge = 0;
+	BOOST_CHECK(xmp_get_property_int64(xmp, NS_EXIF, "MeteringMode",
+									   &valuelarge, NULL));
+	BOOST_CHECK_EQUAL(valuelarge, 10);
+	BOOST_CHECK(xmp_set_property_int64(xmp, NS_EXIF, "MeteringMode",
+									   32, 0));
+
+	BOOST_CHECK(xmp_get_property_int32(xmp, NS_EXIF, "MeteringMode",
+									   &value, NULL));
+	BOOST_CHECK_EQUAL(value, 32);
+
+
 	BOOST_CHECK(xmp_free(xmp));
+
 
 	free(buffer);
 	fclose(f);
 
 	xmp_terminate();
+
+	BOOST_CHECK(!g_lt->check_leaks());
+	BOOST_CHECK(!g_lt->check_errors());
 }
 
 
@@ -249,21 +349,11 @@ init_unit_test_suite( int argc, char * argv[] )
 {
     test_suite* test = BOOST_TEST_SUITE("test exempi");
 
-		if (argc == 1) {
-			// no argument, lets run like we are in "check"
-			const char * srcdir = getenv("srcdir");
-			
-			BOOST_ASSERT(srcdir != NULL);
-			g_testfile = std::string(srcdir);
-			g_testfile += "/test1.xmp";
-		}
-		else {
-			g_testfile = argv[1];
-		}
-		
-		test->add(BOOST_TEST_CASE(&test_exempi));
-		test->add(BOOST_TEST_CASE(&test_serialize));
-		test->add(BOOST_TEST_CASE(&test_write_new_property));
+	prepare_test(argc, argv, "test1.xmp");
+
+	test->add(BOOST_TEST_CASE(&test_exempi));
+	test->add(BOOST_TEST_CASE(&test_serialize));
+	test->add(BOOST_TEST_CASE(&test_write_new_property));
 
     return test;
 }

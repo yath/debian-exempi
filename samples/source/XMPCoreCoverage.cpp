@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <cstring>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -932,7 +933,7 @@ static void DoXMPCoreCoverage ( FILE * log )
 		SXMPMeta meta ( kDateTimeRDF, strlen(kDateTimeRDF) );
 		XMP_DateTime dateValue = { 2000, 1, 2, 3, 4, 5, 0, 0, 0, 0 };
 		bool	boolValue;
-		long	intValue;
+		XMP_Int32 intValue;
 		double	floatValue;
 		char	dateName [8];
 

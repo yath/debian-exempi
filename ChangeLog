@@ -1,33 +1,69 @@
-2007-11-01  Hubert Figuiere  <hub@figuiere.net>
+2008-01-12  Hubert Figuiere  <hub@figuiere.net>
 
-	* exempi/doc/*, exempi/Makefile.am, configure.ac: Documentation 
-	generation with Doxygen (manual). 
+	* configure.ac: Fix the soversion. A mix-up occured in the last
+	release.
 
-2007-10-31  Hubert Figuiere  <hub@figuiere.net>
+=== 1.99.6 ===
 
-	* exempi/exempi.cpp: CHECK_PTR macro to check the input pointers
-	in all the API functions.
-	More functions return true or false (instead of void).
+2008-01-11  Hubert Figuiere  <hub@figuiere.net>
 
-	* exempi/tests/*: update for new API.
+	* exempi/tests/test2.cpp (test_tiff_leak): Ensure that the file is
+	writable.
 
-2007-10-30  Hubert Figuiere  <hub@figuiere.net>
+2007-12-22  Hubert Figuiere  <hub@figuiere.net>
 
-	* ABI breakage: soversion is now 3
+	* configure.ac: make boost optional as it is only for 	
+	the unit tests. (Closes #13712)
+
+	* configure.ac, m4/boost.m4, exempi/test/Makefile.am: 
+	Change the BOOST detection macros.
+	(Closes #13713)
+
+2007-12-20  Hubert Figuiere  <hub@figuiere.net>
+
+	* source/XMPCore/XMPUtils.cpp (ConvertFromInt64): Fix format
+	for long long int that was causing a failure on ppc (big endian).
+
+2007-12-19  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/exempi.cpp, exempi/tests/test1.cpp, 
+	exempi/tests/test1.xmp, exempi/xmp.h: 
+	Add setter/getter for int32, int64, bool, float.
+
+	* exempi/xmpconsts.h, exempi/exempi.cpp: add ACR schema namespace
 	
-	* exempi/{exempi.cpp,xmp.h}: xmp_get_property_and_bits() renamed
-	xmp_get_property(). xmp_set_property2() renamed
-	xmp_set_property(). More exception handling and refactor
-	set_error() use.
+	* public/include/TXMPMeta.hpp, public/include/client-glue/TXMPMeta.incl_cpp,
+	samples/source/XMPCoreCoverage.cpp, 
+	source/XMPFiles/FormatSupport/ReconcileTIFF.cpp:
+	Some APIs use long and long long. Change that.
 
-	* exempi/tests/*: update for new API.
+	* source/XMPFiles/FormatSupport/TIFF_FileWriter.cpp, exempi/tests/*: 
+	Fix a memory leak. See http://www.adobeforums.com/webx/.3bc42b73
+	And test case.
 
-2007-10-02  Hubert Figuiere  <hub@figuiere.net>
+	* exempi/tests/*, configure.ac: detect valgrind.
+	Add leak detection support.
 
-	* exempi/exempi.cpp (xmp_files_new): Catch
-	exceptions.
+2007-12-17  Hubert Figuiere  <hub@figuiere.net>
 
-2007-08-17  Hubert Figuiere  <hub@figuiere.net>
+	* autogen.sh: added for convenience for non-tarball builders.
+	(Closes #13707)
 
-	* configure.ac: add AC_CONFIG_MACRO_DIR to configure.
+2007-12-16  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/*: added new API for get/set datetime.
+
+	* exempi/tests/*: refactor the test preparation.
+
+2007-11-13  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/tests/*.c: Add a bunch of include deemed necessary 
+	by suse factory.
+	* Add a bunch of include deemed necessary by suse factory.
+
+2007-11-08  Hubert Figuiere  <hub@figuiere.net>
+
+	* source/XMPFiles/FormatSupport/Makefile.am: add
+	-Wno-multichar to remove warnings.
+	QuickTime_Support.cpp is in the dist as a noinst_HEADER
 
