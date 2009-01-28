@@ -46,7 +46,6 @@
 #include <iostream>
 
 #define XMP_INCLUDE_XMPFILES 1
-#define UNIX_ENV 1
 #define TXMP_STRING_TYPE std::string
 #include "XMP.hpp"
 #include "XMP.incl_cpp"
@@ -165,6 +164,7 @@ const char NS_IPTC4XMP[] = kXMP_NS_IPTCCore;
 const char NS_TPG[] = kXMP_NS_XMP_PagedFile;
 const char NS_DIMENSIONS_TYPE[] = kXMP_NS_XMP_Dimensions;
 const char NS_CC[] = "http://creativecommons.org/ns#";
+const char NS_PDF[] = kXMP_NS_PDF;
 
 #define STRING(x) reinterpret_cast<std::string*>(x)
 
@@ -203,6 +203,31 @@ bool xmp_register_namespace(const char *namespaceURI,
 		return SXMPMeta::RegisterNamespace(namespaceURI, 
 										   suggestedPrefix,
 										   STRING(registeredPrefix));
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	return false;
+}
+
+
+bool xmp_namespace_prefix(const char *ns, XmpStringPtr prefix)
+{
+	try {
+		return SXMPMeta::GetNamespacePrefix(ns,
+											STRING(prefix));
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	return false;
+}
+
+
+bool xmp_prefix_namespace_uri(const char *prefix, XmpStringPtr ns)
+{
+	try {
+		return SXMPMeta::GetNamespaceURI(prefix, STRING(ns));
 	}
 	catch(const XMP_Error & e) {
 		set_error(e);
@@ -296,7 +321,7 @@ XmpPtr xmp_files_get_new_xmp(XmpFilePtr xf)
 bool xmp_files_get_xmp(XmpFilePtr xf, XmpPtr xmp)
 {
 	CHECK_PTR(xf, false);
-	CHECK_PTR(xmp, NULL);
+	CHECK_PTR(xmp, false);
 	RESET_ERROR;
 	bool result = false;
 	try {
@@ -621,6 +646,17 @@ bool xmp_set_property(XmpPtr xmp, const char *schema,
 
 	bool ret = false;
 	SXMPMeta *txmp = (SXMPMeta *)xmp;
+
+#if 0
+    // for bug #16030
+    // XMP_SDK does not like a "" string.
+    if ((optionBits & (XMP_PROP_VALUE_IS_STRUCT | XMP_PROP_VALUE_IS_ARRAY)) 
+        && (*value == 0))
+    {
+        value = NULL;
+    }
+#endif
+
 	try {
 		txmp->SetProperty(schema, name, value, optionBits);
 		ret = true;

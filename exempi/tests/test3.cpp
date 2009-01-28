@@ -1,7 +1,7 @@
 /*
  * exempi - test3.cpp
  *
- * Copyright (C) 2007 Hubert Figuiere
+ * Copyright (C) 2007-2008 Hubert Figuiere
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +41,7 @@
 #include <string>
 #include <iostream>
 
-#include <boost/static_assert.hpp>
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/minimal.hpp>
 #include <boost/format.hpp>
 
 #include "utils.h"
@@ -51,8 +50,11 @@
 
 using boost::unit_test::test_suite;
 
-void test_exempi_iterate()
+//void test_exempi_iterate()
+int test_main(int argc, char *argv[])
 {
+	prepare_test(argc, argv, "test1.xmp"); 
+
 	size_t len;
 	char * buffer;
 	
@@ -112,19 +114,6 @@ void test_exempi_iterate()
 
 	BOOST_CHECK(!g_lt->check_leaks());
 	BOOST_CHECK(!g_lt->check_errors());
-}
-
-
-
-test_suite*
-init_unit_test_suite( int argc, char * argv[] ) 
-{
-    test_suite* test = BOOST_TEST_SUITE("test exempi");
-	
-	prepare_test(argc, argv, "test1.xmp"); 
-	
-	test->add(BOOST_TEST_CASE(&test_exempi_iterate));
-
-    return test;
+	return 0;
 }
 

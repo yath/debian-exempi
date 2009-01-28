@@ -7,19 +7,19 @@
 // of the Adobe license agreement accompanying it.
 // =================================================================================================
 
-#if WIN_ENV
+#if XMP_WinBuild
 	#pragma warning ( disable : 4996 )	// '...' was declared deprecated
 #endif
 
-#include "MPEG_Handler.hpp"
+#include "MPEG2_Handler.hpp"
 
 using namespace std;
 
 // =================================================================================================
-/// \file MPEG_Handler.cpp
-/// \brief File format handler for MPEG.
+/// \file MPEG2_Handler.cpp
+/// \brief File format handler for MPEG2.
 ///
-/// BLECH! YUCK! GAG! MPEG is done using a sidecar and recognition only by file extension! BARF!!!!!
+/// BLECH! YUCK! GAG! MPEG-2 is done using a sidecar and recognition only by file extension! BARF!!!!!
 ///
 // =================================================================================================
 
@@ -46,64 +46,64 @@ static inline XMP_StringPtr FindFileExtension ( XMP_StringPtr filePath )
 }	// FindFileExtension
 
 // =================================================================================================
-// MPEG_MetaHandlerCTor
-// ====================
+// MPEG2_MetaHandlerCTor
+// =====================
 
-XMPFileHandler * MPEG_MetaHandlerCTor ( XMPFiles * parent )
+XMPFileHandler * MPEG2_MetaHandlerCTor ( XMPFiles * parent )
 {
-	return new MPEG_MetaHandler ( parent );
+	return new MPEG2_MetaHandler ( parent );
 
-}	// MPEG_MetaHandlerCTor
+}	// MPEG2_MetaHandlerCTor
 
 // =================================================================================================
-// MPEG_CheckFormat
-// ================
+// MPEG2_CheckFormat
+// =================
 
-// The MPEG handler uses just the file extension, not the file content. Worse yet, it also uses a
+// The MPEG-2 handler uses just the file extension, not the file content. Worse yet, it also uses a
 // sidecar file for the XMP. This works better if the handler owns the file, we open the sidecar
-// instead of the actual MPEG file.
+// instead of the actual MPEG-2 file.
 
-bool MPEG_CheckFormat ( XMP_FileFormat format,
+bool MPEG2_CheckFormat ( XMP_FileFormat format,
 						XMP_StringPtr  filePath,
 						LFA_FileRef    fileRef,
 						XMPFiles *     parent )
 {
 	IgnoreParam(format); IgnoreParam(filePath); IgnoreParam(fileRef);
 
-	XMP_Assert ( format == kXMP_MPEGFile );
+	XMP_Assert ( (format == kXMP_MPEGFile) || (format == kXMP_MPEG2File) );
 	XMP_Assert ( fileRef == 0 );
 
-	return ( parent->format == kXMP_MPEGFile );	// ! Just use the first call's format hint.
+	return ( (parent->format == kXMP_MPEGFile) || (parent->format == kXMP_MPEGFile) );	// ! Just use the first call's format hint.
 
-}	// MPEG_CheckFormat
+}	// MPEG2_CheckFormat
 
 // =================================================================================================
-// MPEG_MetaHandler::MPEG_MetaHandler
-// ==================================
+// MPEG2_MetaHandler::MPEG2_MetaHandler
+// ====================================
 
-MPEG_MetaHandler::MPEG_MetaHandler ( XMPFiles * _parent )
+MPEG2_MetaHandler::MPEG2_MetaHandler ( XMPFiles * _parent )
 {
 	this->parent = _parent;
-	this->handlerFlags = kMPEG_HandlerFlags;
+	this->handlerFlags = kMPEG2_HandlerFlags;
 	this->stdCharForm  = kXMP_Char8Bit;
 
-}	// MPEG_MetaHandler::MPEG_MetaHandler
+}	// MPEG2_MetaHandler::MPEG2_MetaHandler
 
 // =================================================================================================
-// MPEG_MetaHandler::~MPEG_MetaHandler
-// ===================================
+// MPEG2_MetaHandler::~MPEG2_MetaHandler
+// =====================================
 
-MPEG_MetaHandler::~MPEG_MetaHandler()
+MPEG2_MetaHandler::~MPEG2_MetaHandler()
 {
 	// Nothing to do.
 	
-}	// MPEG_MetaHandler::~MPEG_MetaHandler
+}	// MPEG2_MetaHandler::~MPEG2_MetaHandler
 
 // =================================================================================================
-// MPEG_MetaHandler::CacheFileData
-// ===============================
+// MPEG2_MetaHandler::CacheFileData
+// ================================
 
-void MPEG_MetaHandler::CacheFileData()
+void MPEG2_MetaHandler::CacheFileData()
 {
 	bool readOnly = (! (this->parent->openFlags & kXMPFiles_OpenForUpdate));
 	
@@ -111,7 +111,7 @@ void MPEG_MetaHandler::CacheFileData()
 	this->processedXMP = true;	// Whatever we do here is all that we do for XMPFiles::OpenFile.
 	
 	// Try to open the sidecar XMP file. Tolerate an open failure, there might not be any XMP.
-	// Note that MPEG_CheckFormat can't save the sidecar path because the handler doesn't exist then.
+	// Note that MPEG2_CheckFormat can't save the sidecar path because the handler doesn't exist then.
 	
 	XMP_StringPtr filePath = this->parent->filePath.c_str();
 	XMP_StringPtr extPtr = FindFileExtension ( filePath );
@@ -139,7 +139,7 @@ void MPEG_MetaHandler::CacheFileData()
 			// Try to create a file if it does not yet exist.
 			// *** Could someday check for a permission failure versus no .xmp file.
 			this->parent->fileRef = LFA_Create ( this->sidecarPath.c_str() );
-			if ( this->parent->fileRef == 0 ) XMP_Throw ( "Can't create MPEG sidecar", kXMPErr_ExternalFailure );
+			if ( this->parent->fileRef == 0 ) XMP_Throw ( "Can't create MPEG-2 sidecar", kXMPErr_ExternalFailure );
 		}
 
 	}
@@ -158,18 +158,18 @@ void MPEG_MetaHandler::CacheFileData()
 			this->parent->fileRef = 0;
 		}
 	
-		this->xmpObj.ParseFromBuffer ( this->xmpPacket.c_str(), this->xmpPacket.size() );
+		this->xmpObj.ParseFromBuffer ( this->xmpPacket.c_str(), (XMP_StringLen)this->xmpPacket.size() );
 		this->containsXMP = true;
 
 	}
 
-}	// MPEG_MetaHandler::CacheFileData
+}	// MPEG2_MetaHandler::CacheFileData
 
 // =================================================================================================
-// MPEG_MetaHandler::UpdateFile
-// ============================
+// MPEG2_MetaHandler::UpdateFile
+// =============================
 
-void MPEG_MetaHandler::UpdateFile ( bool doSafeUpdate )
+void MPEG2_MetaHandler::UpdateFile ( bool doSafeUpdate )
 {
 	if ( ! this->needsUpdate ) return;
 	
@@ -177,7 +177,7 @@ void MPEG_MetaHandler::UpdateFile ( bool doSafeUpdate )
 	XMP_Assert ( fileRef != 0 );
 
 	XMP_StringPtr packetStr = this->xmpPacket.c_str();
-	XMP_StringLen packetLen = this->xmpPacket.size();
+	XMP_StringLen packetLen = (XMP_StringLen)this->xmpPacket.size();
 
 	if ( ! doSafeUpdate ) {
 	
@@ -218,17 +218,17 @@ void MPEG_MetaHandler::UpdateFile ( bool doSafeUpdate )
 
 	this->needsUpdate = false;
 
-}	// MPEG_MetaHandler::UpdateFile
+}	// MPEG2_MetaHandler::UpdateFile
 
 // =================================================================================================
-// MPEG_MetaHandler::WriteFile
-// ===========================
+// MPEG2_MetaHandler::WriteFile
+// ============================
 
-void MPEG_MetaHandler::WriteFile ( LFA_FileRef        sourceRef,
+void MPEG2_MetaHandler::WriteFile ( LFA_FileRef        sourceRef,
 								  const std::string & sourcePath )
 {
 	IgnoreParam(sourceRef); IgnoreParam(sourcePath);
 
-	XMP_Throw ( "MPEG_MetaHandler::WriteFile: Should never be called", kXMPErr_Unavailable );
+	XMP_Throw ( "MPEG2_MetaHandler::WriteFile: Should never be called", kXMPErr_Unavailable );
 
-}	// MPEG_MetaHandler::WriteFile
+}	// MPEG2_MetaHandler::WriteFile

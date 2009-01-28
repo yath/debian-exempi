@@ -1,5 +1,5 @@
-#ifndef __MPEG_Handler_hpp__
-#define __MPEG_Handler_hpp__	1
+#ifndef __MPEG2_Handler_hpp__
+#define __MPEG2_Handler_hpp__	1
 
 // =================================================================================================
 // ADOBE SYSTEMS INCORPORATED
@@ -13,45 +13,45 @@
 #include "XMPFiles_Impl.hpp"
 
 // =================================================================================================
-/// \file MPEG_Handler.hpp
-/// \brief File format handler for MPEG.
+/// \file MPEG2_Handler.hpp
+/// \brief File format handler for MPEG2.
 ///
 /// This header ...
 ///
 // =================================================================================================
 
-extern XMPFileHandler * MPEG_MetaHandlerCTor ( XMPFiles * parent );
+extern XMPFileHandler * MPEG2_MetaHandlerCTor ( XMPFiles * parent );
 
-extern bool MPEG_CheckFormat ( XMP_FileFormat format,
+extern bool MPEG2_CheckFormat ( XMP_FileFormat format,
 							   XMP_StringPtr  filePath,
 							   LFA_FileRef    fileRef,
 							   XMPFiles *     parent);
 
-static const XMP_OptionBits kMPEG_HandlerFlags = ( kXMPFiles_CanInjectXMP |
-												   kXMPFiles_CanExpand |
-												   kXMPFiles_CanRewrite |
-												   kXMPFiles_AllowsOnlyXMP |
-												   kXMPFiles_ReturnsRawPacket |
-												   kXMPFiles_HandlerOwnsFile |
-												   kXMPFiles_AllowsSafeUpdate | 
-												   kXMPFiles_UsesSidecarXMP );
+static const XMP_OptionBits kMPEG2_HandlerFlags = ( kXMPFiles_CanInjectXMP |
+													kXMPFiles_CanExpand |
+													kXMPFiles_CanRewrite |
+													kXMPFiles_AllowsOnlyXMP |
+													kXMPFiles_ReturnsRawPacket |
+													kXMPFiles_HandlerOwnsFile |
+													kXMPFiles_AllowsSafeUpdate | 
+													kXMPFiles_UsesSidecarXMP );
 
-class MPEG_MetaHandler : public XMPFileHandler
+class MPEG2_MetaHandler : public XMPFileHandler
 {
 public:
 
 	std::string sidecarPath;
 
-	MPEG_MetaHandler ( XMPFiles * parent );
-	~MPEG_MetaHandler();
+	MPEG2_MetaHandler ( XMPFiles * parent );
+	~MPEG2_MetaHandler();
 
 	void CacheFileData();
 
 	void UpdateFile ( bool doSafeUpdate );
     void WriteFile  ( LFA_FileRef sourceRef, const std::string & sourcePath );
 
-};	// MPEG_MetaHandler
+};	// MPEG2_MetaHandler
 
 // =================================================================================================
 
-#endif /* __MPEG_Handler_hpp__ */
+#endif /* __MPEG2_Handler_hpp__ */

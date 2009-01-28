@@ -20,22 +20,15 @@
 
 #define kLittleEndianHost (! kBigEndianHost)
 #if XMP_WinBuild
+	#pragma warning ( disable : 4127 )	// conditional expression is constant
 	#define kBigEndianHost 0
 #elif XMP_MacBuild
-	#if __MWERKS__
-		#if __POWERPC__
-			#define kBigEndianHost 1
-		#else
-			#error "CodeWarrior must only be for PowerPC"
-		#endif
-	#else	// Must be an Xcode build.
-		#if __BIG_ENDIAN__
-			#define kBigEndianHost 1
-		#elif __LITTLE_ENDIAN__
-			#define kBigEndianHost 0
-		#else
-			#error "Neither __BIG_ENDIAN__ nor __LITTLE_ENDIAN__ is set"
-		#endif
+	#if __BIG_ENDIAN__
+		#define kBigEndianHost 1
+	#elif __LITTLE_ENDIAN__
+		#define kBigEndianHost 0
+	#else
+		#error "Neither __BIG_ENDIAN__ nor __LITTLE_ENDIAN__ is set"
 	#endif
 #elif XMP_UNIXBuild
 

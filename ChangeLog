@@ -1,3 +1,113 @@
+2008-12-24  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/tests/test-bgo.cpp
+        * exempi/tests/test-xmpfiles.cpp
+	Remove serious warnings.
+
+2008-12-21  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/tests/Makefile.am
+        * exempi/tests/test-bgo.cpp
+	* exempi/tests/test-exempi-core.cpp
+	* exempi/tests/test-serialise.cpp
+	* exempi/tests/test-tiff-leak.cpp
+	* exempi/tests/test-write-new-prop.cpp
+	* exempi/tests/test-xmpfiles-write.cpp
+	* exempi/tests/test-xmpfiles.cpp
+	* exempi/tests/test3.cpp
+	* exempi/tests/testinit.cpp
+	Migrated to use boost/test/minimal
+	
+	* exempi/tests/test1.cpp
+	* exempi/tests/test2.cpp
+	Split out for the above change.
+
+2008-12-19  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/Makefile.am (EXTRA_DIST): Added libexempi.sym
+
+2008-11-26  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/tests/Makefile.am (TESTS_ENVIRONMENT): 
+	BOOST_TEST_CATCH_SYSTEM_ERRORS=no is set before running
+	the test. This avoid a failure because of system() on 
+	boost 1.35 and later.
+	See https://svn.boost.org/trac/boost/ticket/1723
+
+2008-11-24  Hubert Figuiere  <hub@figuiere.net>
+
+	* source/XMPFiles/FormatSupport/ReconcileTIFF.cpp (ImportSingleTIFF_ASCII): 
+	Re-enable the conversion for UNIX. Disabled in the original SDK.
+
+	* exempi/tests/Makefile.am:
+	* exempi/tests/fdo18635.jpg:
+	* exempi/tests/test-bgo.cpp
+	Don't crash on not so valid Exif. (Closes #18635)
+	And test case.
+
+2008-11-18  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/libexempi.sym, exempi/Makefile.am (libexempi_la_LDFLAGS): 
+	Use symbol file. (Closes #16139)
+
+	* samples/testfiles/BlueSquare.gif,
+	samples/testfiles/Makefile.am: Forgotten files.
+
+	* NEWS,	configure.ac, exempi/Makefile.am, 
+	exempi/tests/test2.cpp, exempi/tests/testcore.sh, 
+	samples/Makefile.am, samples/source/Makefile.am, 
+	source/XMPFiles/FileHandlers/Makefile.am,
+	source/XMPFiles/FormatSupport/Makefile.am,
+	source/XMPCore/Makefile.am, source/common/Makefile.am:
+	Fix the build system.
+	* source/XMPFiles/FileHandlers/AVCHD_Handler.cpp
+	source/XMPFiles/FileHandlers/MP3_Handler.cpp,
+	source/XMPFiles/FileHandlers/MP3_Handler.hpp,
+	source/XMPFiles/FileHandlers/P2_Handler.cpp,
+	source/XMPFiles/FileHandlers/SonyHDV_Handler.cpp,
+	source/XMPFiles/FileHandlers/WAV_Handler.cpp,
+	source/XMPFiles/FileHandlers/WAV_Handler.hpp,
+	source/XMPFiles/FileHandlers/XDCAMEX_Handler.cpp,
+	source/XMPFiles/FileHandlers/XDCAM_Handler.cpp,
+	source/XMPFiles/FormatSupport/ID3_Support.cpp,
+	source/XMPFiles/FormatSupport/ID3_Support.hpp,
+	source/XMPFiles/FormatSupport/RIFF_Support.cpp,
+	source/XMPFiles/FormatSupport/RIFF_Support.hpp,
+	source/XMPFiles/FormatSupport/ReconcileTIFF.cpp,
+	source/XMPFiles/FormatSupport/Reconcile_Impl.cpp,
+	source/XMPFiles/FormatSupport/Reconcile_Impl.hpp,
+	source/XMPFiles/FormatSupport/TIFF_Support.hpp:
+	Enable all the file formats that Adobe disabled on 
+	purpose.
+	* samples/source/ModifyingXMP.cpp,
+	source/common/EndianUtils.hpp,
+	source/common/LargeFileAccess.hpp,
+	source/common/XML_Node.cpp:
+	Other misc merge fixes.
+	
+	* Merge the XPM SDK 4.4.2
+
+2008-05-29  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/exempi.cpp, exempi/Makefile.am: don't define 
+	UNIX_ENV in the source code but use the CPPFLAGS.
+
+	* exempi/exempi.cpp (xmp_files_get_xmp): CHECK_PTR should 
+	return false and not NULL.
+
+2008-04-06  Hubert Figuiere  <hub@figuiere.net>
+
+	* exempi/xmp.h, exempi/exempi.cpp: add new API
+	xmp_namespace_prefix(), xmp_prefix_namespace_uri().
+	* exempi/tests/test1.cpp: corresponding test.
+	(Closes #14962)
+
+2008-04-04  Hubert Figuiere  <hub@figuiere.net>
+
+	* Start 2.1.0
+
+=== 2.0.2 ===
+
 2008-08-12  Hubert Figuiere  <hub@figuiere.net>
 
 	* exempi/exempi.cpp (set_error): Use pthread for the TLS 

@@ -70,28 +70,41 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = xmpcoverage$(EXEEXT) xmpfilescoverage$(EXEEXT) \
-	dumpxmp$(EXEEXT) dumpmainxmp$(EXEEXT)
+	dumpxmp$(EXEEXT) dumpmainxmp$(EXEEXT) customschema$(EXEEXT) \
+	modifyingxmp$(EXEEXT) readingxmp$(EXEEXT)
 subdir = samples/source
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_tls.m4 \
-	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_dumpmainxmp_OBJECTS = DumpMainXMP.$(OBJEXT)
-dumpmainxmp_OBJECTS = $(am_dumpmainxmp_OBJECTS)
+am_customschema_OBJECTS = CustomSchema.$(OBJEXT)
+customschema_OBJECTS = $(am_customschema_OBJECTS)
 am__DEPENDENCIES_1 = $(top_builddir)/source/XMPCore/libXMPCore.la \
 	$(top_builddir)/source/XMPFiles/libXMPFiles.la \
 	$(top_builddir)/source/common/libxmpcommon.la \
 	$(top_builddir)/third-party/MD5/libmd5.la
+customschema_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_dumpmainxmp_OBJECTS = DumpMainXMP.$(OBJEXT)
+dumpmainxmp_OBJECTS = $(am_dumpmainxmp_OBJECTS)
 dumpmainxmp_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_dumpxmp_OBJECTS = DumpScannedXMP.$(OBJEXT) XMPScanner.$(OBJEXT)
 dumpxmp_OBJECTS = $(am_dumpxmp_OBJECTS)
 dumpxmp_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_modifyingxmp_OBJECTS = ModifyingXMP.$(OBJEXT)
+modifyingxmp_OBJECTS = $(am_modifyingxmp_OBJECTS)
+modifyingxmp_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am_readingxmp_OBJECTS = ReadingXMP.$(OBJEXT)
+readingxmp_OBJECTS = $(am_readingxmp_OBJECTS)
+readingxmp_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_xmpcoverage_OBJECTS = XMPCoreCoverage.$(OBJEXT) \
 	XMPScanner.$(OBJEXT)
 xmpcoverage_OBJECTS = $(am_xmpcoverage_OBJECTS)
@@ -111,10 +124,14 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(dumpmainxmp_SOURCES) $(dumpxmp_SOURCES) \
-	$(xmpcoverage_SOURCES) $(xmpfilescoverage_SOURCES)
-DIST_SOURCES = $(dumpmainxmp_SOURCES) $(dumpxmp_SOURCES) \
-	$(xmpcoverage_SOURCES) $(xmpfilescoverage_SOURCES)
+SOURCES = $(customschema_SOURCES) $(dumpmainxmp_SOURCES) \
+	$(dumpxmp_SOURCES) $(modifyingxmp_SOURCES) \
+	$(readingxmp_SOURCES) $(xmpcoverage_SOURCES) \
+	$(xmpfilescoverage_SOURCES)
+DIST_SOURCES = $(customschema_SOURCES) $(dumpmainxmp_SOURCES) \
+	$(dumpxmp_SOURCES) $(modifyingxmp_SOURCES) \
+	$(readingxmp_SOURCES) $(xmpcoverage_SOURCES) \
+	$(xmpfilescoverage_SOURCES)
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -143,7 +160,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 DSYMUTIL = @DSYMUTIL@
-ECHO = @ECHO@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
@@ -157,25 +174,30 @@ EXEMPI_MAJOR_VERSION = @EXEMPI_MAJOR_VERSION@
 EXEMPI_PLATFORM_DEF = @EXEMPI_PLATFORM_DEF@
 EXEMPI_REVISION = @EXEMPI_REVISION@
 EXEMPI_VERSION_INFO = @EXEMPI_VERSION_INFO@
-F77 = @F77@
-FFLAGS = @FFLAGS@
+FGREP = @FGREP@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+NM = @NM@
 NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -196,7 +218,7 @@ abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_F77 = @ac_ct_F77@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -227,6 +249,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -240,6 +263,7 @@ sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CXXFLAGS = -fexceptions -funsigned-char -fPIC \
@@ -248,11 +272,17 @@ AM_CXXFLAGS = -fexceptions -funsigned-char -fPIC \
 AM_CPPFLAGS = -D@EXEMPI_PLATFORM_DEF@=1 -D_FILE_OFFSET_BITS=64
 XMPLIBS = $(top_builddir)/source/XMPCore/libXMPCore.la \
 	$(top_builddir)/source/XMPFiles/libXMPFiles.la \
-	$(top_builddir)/source/common/libxmpcommon.la -lexpat \
+	$(top_builddir)/source/common/libxmpcommon.la -lexpat -lz \
 	$(top_builddir)/third-party/MD5/libmd5.la
 
 INCLUDES = -I$(top_srcdir)/public/include
 noinst_HEADERS = XMPScanner.hpp
+customschema_SOURCES = CustomSchema.cpp
+customschema_LDADD = $(XMPLIBS)
+modifyingxmp_SOURCES = ModifyingXMP.cpp
+modifyingxmp_LDADD = $(XMPLIBS)
+readingxmp_SOURCES = ReadingXMP.cpp
+readingxmp_LDADD = $(XMPLIBS)
 xmpcoverage_SOURCES = XMPCoreCoverage.cpp XMPScanner.cpp
 xmpcoverage_LDADD = $(XMPLIBS)
 xmpfilescoverage_SOURCES = XMPFilesCoverage.cpp
@@ -274,9 +304,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  samples/source/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  samples/source/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  samples/source/Makefile
+	  $(AUTOMAKE) --gnu  samples/source/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -301,12 +331,21 @@ clean-noinstPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
+customschema$(EXEEXT): $(customschema_OBJECTS) $(customschema_DEPENDENCIES) 
+	@rm -f customschema$(EXEEXT)
+	$(CXXLINK) $(customschema_OBJECTS) $(customschema_LDADD) $(LIBS)
 dumpmainxmp$(EXEEXT): $(dumpmainxmp_OBJECTS) $(dumpmainxmp_DEPENDENCIES) 
 	@rm -f dumpmainxmp$(EXEEXT)
 	$(CXXLINK) $(dumpmainxmp_OBJECTS) $(dumpmainxmp_LDADD) $(LIBS)
 dumpxmp$(EXEEXT): $(dumpxmp_OBJECTS) $(dumpxmp_DEPENDENCIES) 
 	@rm -f dumpxmp$(EXEEXT)
 	$(CXXLINK) $(dumpxmp_OBJECTS) $(dumpxmp_LDADD) $(LIBS)
+modifyingxmp$(EXEEXT): $(modifyingxmp_OBJECTS) $(modifyingxmp_DEPENDENCIES) 
+	@rm -f modifyingxmp$(EXEEXT)
+	$(CXXLINK) $(modifyingxmp_OBJECTS) $(modifyingxmp_LDADD) $(LIBS)
+readingxmp$(EXEEXT): $(readingxmp_OBJECTS) $(readingxmp_DEPENDENCIES) 
+	@rm -f readingxmp$(EXEEXT)
+	$(CXXLINK) $(readingxmp_OBJECTS) $(readingxmp_LDADD) $(LIBS)
 xmpcoverage$(EXEEXT): $(xmpcoverage_OBJECTS) $(xmpcoverage_DEPENDENCIES) 
 	@rm -f xmpcoverage$(EXEEXT)
 	$(CXXLINK) $(xmpcoverage_OBJECTS) $(xmpcoverage_LDADD) $(LIBS)
@@ -320,8 +359,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CustomSchema.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DumpMainXMP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DumpScannedXMP.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ModifyingXMP.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ReadingXMP.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XMPCoreCoverage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XMPFilesCoverage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XMPScanner.Po@am__quote@

@@ -36,10 +36,10 @@ namespace RIFF_Support
 {
 	// Some types, if not already defined
 	#ifndef UInt64
-		typedef unsigned long long UInt64;
+		typedef XMP_Uns64 UInt64;
 	#endif
 	#ifndef UInt32
-		typedef unsigned long UInt32;
+		typedef XMP_Uns32 UInt32;
 	#endif
 
 	/**
@@ -116,9 +116,11 @@ namespace RIFF_Support
 	** will contain the field size if true if returned.
 	**
 	** Returns true if the chunk is found.
+	**
+	** position of chunk _contents_ is returned in postPtr
 	*/
 	bool GetRIFFChunk ( LFA_FileRef inFileRef, RiffState & inOutRiffState, long tagID, long parentID,
-						long subtypeID, char * outBuffer, unsigned long * outBufferSize );
+		long subtypeID, char * outBuffer, unsigned long * outBufferSize, UInt64* posPtr = 0);
 
 
 	/**
@@ -168,5 +170,24 @@ namespace RIFF_Support
 	bool MakeChunk ( LFA_FileRef inFileRef, RiffState & inOutRiffState, long riffType, UInt32 len );
 
 } // namespace RIFF_Support
+
+// =================================================================================================
+
+// *** Could be moved to a separate header
+
+namespace CreatorAtom {
+
+	bool Import ( SXMPMeta& xmpObj, 
+				  LFA_FileRef fileRef, 
+				  RIFF_Support::RiffState& riffState );
+
+	bool Update ( SXMPMeta& xmpObj,
+				  LFA_FileRef fileRef,
+				  long riffType,
+				  RIFF_Support::RiffState& riffState );
+
+}
+
+// =================================================================================================
 
 #endif	// __RIFF_Support_hpp__

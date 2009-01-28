@@ -17,7 +17,7 @@
 #
 # exempi - Makefile.am
 #
-# Copyright (C) 2007 Hubert Figuiere
+# Copyright (C) 2007-2008 Hubert Figuiere
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -68,45 +68,90 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@WITH_UNIT_TEST_TRUE@check_PROGRAMS = test1$(EXEEXT) test2$(EXEEXT) \
-@WITH_UNIT_TEST_TRUE@	test3$(EXEEXT) testinit$(EXEEXT)
+@WITH_UNIT_TEST_TRUE@check_PROGRAMS = testexempicore$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testserialise$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testwritenewprop$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testtiffleak$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testxmpfiles$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testxmpfileswrite$(EXEEXT) test3$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testinit$(EXEEXT) testfdo18635$(EXEEXT)
 @WITH_UNIT_TEST_TRUE@TESTS = testcore.sh testinit$(EXEEXT) \
-@WITH_UNIT_TEST_TRUE@	test1$(EXEEXT) test2$(EXEEXT) \
-@WITH_UNIT_TEST_TRUE@	test3$(EXEEXT)
+@WITH_UNIT_TEST_TRUE@	testexempicore$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testserialise$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testwritenewprop$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testtiffleak$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testxmpfiles$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testxmpfileswrite$(EXEEXT) test3$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	testfdo18635$(EXEEXT)
 subdir = exempi/tests
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_tls.m4 \
-	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
-am_test1_OBJECTS = test1.$(OBJEXT) utils.$(OBJEXT)
-test1_OBJECTS = $(am_test1_OBJECTS)
-test1_DEPENDENCIES = ../libexempi.la
-test1_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(test1_LDFLAGS) $(LDFLAGS) -o $@
-am_test2_OBJECTS = test2.$(OBJEXT) utils.$(OBJEXT)
-test2_OBJECTS = $(am_test2_OBJECTS)
-test2_DEPENDENCIES = ../libexempi.la
-test2_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(test2_LDFLAGS) $(LDFLAGS) -o $@
 am_test3_OBJECTS = test3.$(OBJEXT) utils.$(OBJEXT)
 test3_OBJECTS = $(am_test3_OBJECTS)
 test3_DEPENDENCIES = ../libexempi.la
 test3_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(test3_LDFLAGS) $(LDFLAGS) -o $@
+am_testexempicore_OBJECTS = test-exempi-core.$(OBJEXT) utils.$(OBJEXT)
+testexempicore_OBJECTS = $(am_testexempicore_OBJECTS)
+testexempicore_DEPENDENCIES = ../libexempi.la
+testexempicore_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testexempicore_LDFLAGS) $(LDFLAGS) -o $@
+am_testfdo18635_OBJECTS = test-bgo.$(OBJEXT) utils.$(OBJEXT)
+testfdo18635_OBJECTS = $(am_testfdo18635_OBJECTS)
+testfdo18635_DEPENDENCIES = ../libexempi.la
+testfdo18635_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testfdo18635_LDFLAGS) $(LDFLAGS) -o $@
 am_testinit_OBJECTS = testinit.$(OBJEXT) utils.$(OBJEXT)
 testinit_OBJECTS = $(am_testinit_OBJECTS)
 testinit_DEPENDENCIES = ../libexempi.la
 testinit_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(testinit_LDFLAGS) $(LDFLAGS) -o $@
+am_testserialise_OBJECTS = test-serialise.$(OBJEXT) utils.$(OBJEXT)
+testserialise_OBJECTS = $(am_testserialise_OBJECTS)
+testserialise_DEPENDENCIES = ../libexempi.la
+testserialise_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testserialise_LDFLAGS) $(LDFLAGS) -o $@
+am_testtiffleak_OBJECTS = test-tiff-leak.$(OBJEXT) utils.$(OBJEXT)
+testtiffleak_OBJECTS = $(am_testtiffleak_OBJECTS)
+testtiffleak_DEPENDENCIES = ../libexempi.la
+testtiffleak_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testtiffleak_LDFLAGS) $(LDFLAGS) -o $@
+am_testwritenewprop_OBJECTS = test-write-new-prop.$(OBJEXT) \
+	utils.$(OBJEXT)
+testwritenewprop_OBJECTS = $(am_testwritenewprop_OBJECTS)
+testwritenewprop_DEPENDENCIES = ../libexempi.la
+testwritenewprop_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testwritenewprop_LDFLAGS) $(LDFLAGS) -o $@
+am_testxmpfiles_OBJECTS = test-xmpfiles.$(OBJEXT) utils.$(OBJEXT)
+testxmpfiles_OBJECTS = $(am_testxmpfiles_OBJECTS)
+testxmpfiles_DEPENDENCIES = ../libexempi.la
+testxmpfiles_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testxmpfiles_LDFLAGS) $(LDFLAGS) -o $@
+am_testxmpfileswrite_OBJECTS = test-xmpfiles-write.$(OBJEXT) \
+	utils.$(OBJEXT)
+testxmpfileswrite_OBJECTS = $(am_testxmpfileswrite_OBJECTS)
+testxmpfileswrite_DEPENDENCIES = ../libexempi.la
+testxmpfileswrite_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testxmpfileswrite_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -119,10 +164,16 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES) \
-	$(testinit_SOURCES)
-DIST_SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES) \
-	$(testinit_SOURCES)
+SOURCES = $(test3_SOURCES) $(testexempicore_SOURCES) \
+	$(testfdo18635_SOURCES) $(testinit_SOURCES) \
+	$(testserialise_SOURCES) $(testtiffleak_SOURCES) \
+	$(testwritenewprop_SOURCES) $(testxmpfiles_SOURCES) \
+	$(testxmpfileswrite_SOURCES)
+DIST_SOURCES = $(test3_SOURCES) $(testexempicore_SOURCES) \
+	$(testfdo18635_SOURCES) $(testinit_SOURCES) \
+	$(testserialise_SOURCES) $(testtiffleak_SOURCES) \
+	$(testwritenewprop_SOURCES) $(testxmpfiles_SOURCES) \
+	$(testxmpfileswrite_SOURCES)
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -151,7 +202,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 DSYMUTIL = @DSYMUTIL@
-ECHO = @ECHO@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
@@ -165,25 +216,30 @@ EXEMPI_MAJOR_VERSION = @EXEMPI_MAJOR_VERSION@
 EXEMPI_PLATFORM_DEF = @EXEMPI_PLATFORM_DEF@
 EXEMPI_REVISION = @EXEMPI_REVISION@
 EXEMPI_VERSION_INFO = @EXEMPI_VERSION_INFO@
-F77 = @F77@
-FFLAGS = @FFLAGS@
+FGREP = @FGREP@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+NM = @NM@
 NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -204,7 +260,7 @@ abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_F77 = @ac_ct_F77@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -235,6 +291,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -248,27 +305,43 @@ sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 INCLUDES = -I$(srcdir)/.. -I$(top_srcdir)/public/include
-@WITH_UNIT_TEST_TRUE@TESTS_ENVIRONMENT = TEST_DIR=$(srcdir) @VALGRIND@
+@WITH_UNIT_TEST_TRUE@TESTS_ENVIRONMENT = TEST_DIR=$(srcdir) BOOST_TEST_CATCH_SYSTEM_ERRORS=no @VALGRIND@
 check_SCRIPTS = testcore.sh
-check_DATA = test1.xmp
+check_DATA = test1.xmp fdo18635.jpg
 noinst_HEADERS = utils.h
 EXTRA_DIST = $(check_DATA) $(check_SCRIPTS)
 CLEANFILES = test.jpg
 testinit_SOURCES = testinit.cpp utils.cpp
 testinit_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
 testinit_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
-test1_SOURCES = test1.cpp utils.cpp
-test1_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
-test1_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
-test2_SOURCES = test2.cpp utils.cpp
-test2_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
-test2_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+testexempicore_SOURCES = test-exempi-core.cpp utils.cpp
+testexempicore_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testexempicore_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+testserialise_SOURCES = test-serialise.cpp utils.cpp
+testserialise_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testserialise_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+testwritenewprop_SOURCES = test-write-new-prop.cpp utils.cpp
+testwritenewprop_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testwritenewprop_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+testtiffleak_SOURCES = test-tiff-leak.cpp utils.cpp
+testtiffleak_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testtiffleak_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+testxmpfiles_SOURCES = test-xmpfiles.cpp utils.cpp
+testxmpfiles_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testxmpfiles_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+testxmpfileswrite_SOURCES = test-xmpfiles-write.cpp utils.cpp
+testxmpfileswrite_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testxmpfileswrite_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
 test3_SOURCES = test3.cpp utils.cpp
 test3_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
 test3_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+testfdo18635_SOURCES = test-bgo.cpp utils.cpp
+testfdo18635_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testfdo18635_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
 all: all-am
 
 .SUFFIXES:
@@ -282,9 +355,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  exempi/tests/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  exempi/tests/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  exempi/tests/Makefile
+	  $(AUTOMAKE) --gnu  exempi/tests/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -309,18 +382,33 @@ clean-checkPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
-test1$(EXEEXT): $(test1_OBJECTS) $(test1_DEPENDENCIES) 
-	@rm -f test1$(EXEEXT)
-	$(test1_LINK) $(test1_OBJECTS) $(test1_LDADD) $(LIBS)
-test2$(EXEEXT): $(test2_OBJECTS) $(test2_DEPENDENCIES) 
-	@rm -f test2$(EXEEXT)
-	$(test2_LINK) $(test2_OBJECTS) $(test2_LDADD) $(LIBS)
 test3$(EXEEXT): $(test3_OBJECTS) $(test3_DEPENDENCIES) 
 	@rm -f test3$(EXEEXT)
 	$(test3_LINK) $(test3_OBJECTS) $(test3_LDADD) $(LIBS)
+testexempicore$(EXEEXT): $(testexempicore_OBJECTS) $(testexempicore_DEPENDENCIES) 
+	@rm -f testexempicore$(EXEEXT)
+	$(testexempicore_LINK) $(testexempicore_OBJECTS) $(testexempicore_LDADD) $(LIBS)
+testfdo18635$(EXEEXT): $(testfdo18635_OBJECTS) $(testfdo18635_DEPENDENCIES) 
+	@rm -f testfdo18635$(EXEEXT)
+	$(testfdo18635_LINK) $(testfdo18635_OBJECTS) $(testfdo18635_LDADD) $(LIBS)
 testinit$(EXEEXT): $(testinit_OBJECTS) $(testinit_DEPENDENCIES) 
 	@rm -f testinit$(EXEEXT)
 	$(testinit_LINK) $(testinit_OBJECTS) $(testinit_LDADD) $(LIBS)
+testserialise$(EXEEXT): $(testserialise_OBJECTS) $(testserialise_DEPENDENCIES) 
+	@rm -f testserialise$(EXEEXT)
+	$(testserialise_LINK) $(testserialise_OBJECTS) $(testserialise_LDADD) $(LIBS)
+testtiffleak$(EXEEXT): $(testtiffleak_OBJECTS) $(testtiffleak_DEPENDENCIES) 
+	@rm -f testtiffleak$(EXEEXT)
+	$(testtiffleak_LINK) $(testtiffleak_OBJECTS) $(testtiffleak_LDADD) $(LIBS)
+testwritenewprop$(EXEEXT): $(testwritenewprop_OBJECTS) $(testwritenewprop_DEPENDENCIES) 
+	@rm -f testwritenewprop$(EXEEXT)
+	$(testwritenewprop_LINK) $(testwritenewprop_OBJECTS) $(testwritenewprop_LDADD) $(LIBS)
+testxmpfiles$(EXEEXT): $(testxmpfiles_OBJECTS) $(testxmpfiles_DEPENDENCIES) 
+	@rm -f testxmpfiles$(EXEEXT)
+	$(testxmpfiles_LINK) $(testxmpfiles_OBJECTS) $(testxmpfiles_LDADD) $(LIBS)
+testxmpfileswrite$(EXEEXT): $(testxmpfileswrite_OBJECTS) $(testxmpfileswrite_DEPENDENCIES) 
+	@rm -f testxmpfileswrite$(EXEEXT)
+	$(testxmpfileswrite_LINK) $(testxmpfileswrite_OBJECTS) $(testxmpfileswrite_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -328,8 +416,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test1.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-bgo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-exempi-core.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-serialise.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-tiff-leak.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-write-new-prop.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-xmpfiles-write.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-xmpfiles.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test3.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testinit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Po@am__quote@
