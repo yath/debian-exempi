@@ -86,7 +86,7 @@ am_libxmpfilehandlers_la_OBJECTS = AVI_Handler.lo InDesign_Handler.lo \
 	MPEG_Handler.lo PostScript_Handler.lo Scanner_Handler.lo \
 	Trivial_Handler.lo Basic_Handler.lo JPEG_Handler.lo \
 	MP3_Handler.lo PNG_Handler.lo PSD_Handler.lo TIFF_Handler.lo \
-	WAV_Handler.lo
+	WAV_Handler.lo GIF_Handler.lo
 libxmpfilehandlers_la_OBJECTS = $(am_libxmpfilehandlers_la_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -229,7 +229,7 @@ noinst_HEADERS = AVI_Handler.hpp    InDesign_Handler.hpp  MOV_Handler.hpp  \
 	Scanner_Handler.hpp  Trivial_Handler.hpp\
 	Basic_Handler.hpp  JPEG_Handler.hpp      \
 	MP3_Handler.hpp  PNG_Handler.hpp   PSD_Handler.hpp \
-	TIFF_Handler.hpp     WAV_Handler.hpp
+	TIFF_Handler.hpp     WAV_Handler.hpp  GIF_Handler.hpp
 
 INCLUDES = -I$(srcdir)/.. -I$(srcdir)/../FormatSupport \
 	-I$(top_srcdir)/public/include/ -I$(top_srcdir)/build/ \
@@ -244,7 +244,7 @@ libxmpfilehandlers_la_SOURCES = AVI_Handler.cpp    InDesign_Handler.cpp \
 	Trivial_Handler.cpp \
 	Basic_Handler.cpp  JPEG_Handler.cpp      MP3_Handler.cpp  \
 	PNG_Handler.cpp   PSD_Handler.cpp         TIFF_Handler.cpp     \
-	WAV_Handler.cpp
+	WAV_Handler.cpp  GIF_Handler.cpp
 
 all: all-am
 
@@ -299,6 +299,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AVI_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Basic_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GIF_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InDesign_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JPEG_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MP3_Handler.Plo@am__quote@

@@ -1,6 +1,6 @@
 AC_PREREQ(2.50)
 AC_INIT(exempi/xmp.h)
-AM_INIT_AUTOMAKE(exempi, 1.99.3)
+AM_INIT_AUTOMAKE(exempi, 1.99.4)
 AM_MAINTAINER_MODE
 
 
@@ -30,9 +30,10 @@ dnl 1.99.0 is the revision 2 0 0
 dnl 1.99.1 is the revision 3 1 0
 dnl 1.99.2 is the revision 4 2 0
 dnl 1.99.3 is the revision 5 3 0
+dnl 1.99.4 is the revision 6 4 0
 AC_SUBST([EXEMPI_REVISION], [0])
-AC_SUBST([EXEMPI_AGE],      [3])
-AC_SUBST([EXEMPI_CURRENT],  [5])
+AC_SUBST([EXEMPI_AGE],      [4])
+AC_SUBST([EXEMPI_CURRENT],  [6])
 AC_SUBST([EXEMPI_CURRENT_MIN],
          [`expr $EXEMPI_CURRENT - $EXEMPI_AGE`])
 AC_SUBST([EXEMPI_VERSION_INFO],
