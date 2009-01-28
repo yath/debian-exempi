@@ -36,18 +36,19 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
 
 #include <string>
 
 #include <boost/static_assert.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
+#include "utils.h"
 #include "xmp.h"
 #include "xmpconsts.h"
 
 using boost::unit_test::test_suite;
-
-std::string g_testfile;
 
 
 void test_xmpfiles_write()
@@ -107,6 +108,9 @@ void test_xmpfiles_write()
 
 //	unlink("test.jpg");
 	xmp_terminate();
+
+	BOOST_CHECK(!g_lt->check_leaks());
+	BOOST_CHECK(!g_lt->check_errors());
 }
 
 
@@ -123,10 +127,9 @@ void test_xmpfiles()
 
 	XmpPtr xmp = xmp_new_empty();
 
+	BOOST_CHECK(xmp != NULL);
 	
 	BOOST_CHECK(xmp_files_get_xmp(f, xmp));
-
-	BOOST_CHECK(xmp != NULL);
 
 	XmpStringPtr the_prop = xmp_string_new();
 
@@ -138,8 +141,48 @@ void test_xmpfiles()
 
 	BOOST_CHECK(xmp_files_free(f));
 	xmp_terminate();
+
+	BOOST_CHECK(!g_lt->check_leaks());
+	BOOST_CHECK(!g_lt->check_errors());
 }
 
+
+/**  See http://www.adobeforums.com/webx/.3bc42b73 for the orignal
+ *   test case */
+void 
+test_tiff_leak()
+{
+	std::string orig_tiff_file = g_src_testdir 
+		+ "../../samples/BlueSquares/BlueSquare.tif";
+	std::string command = "cp ";
+	command += orig_tiff_file + " test.tif";
+	BOOST_CHECK(system(command.c_str()) >= 0);
+	BOOST_CHECK(chmod("test.tif", S_IRUSR|S_IWUSR) == 0);
+	BOOST_CHECK(xmp_init());
+
+	XmpFilePtr f = xmp_files_open_new("test.tif", XMP_OPEN_FORUPDATE);
+
+	BOOST_CHECK(f != NULL);
+	if (f == NULL) {
+		return;
+	}
+
+	XmpPtr xmp;
+	
+	BOOST_CHECK(xmp = xmp_files_get_new_xmp(f));
+	BOOST_CHECK(xmp != NULL);
+
+	xmp_set_localized_text(xmp, NS_DC, "description", "en", "en-US", "foo", 0);
+	BOOST_CHECK(xmp_files_put_xmp(f, xmp));
+	BOOST_CHECK(xmp_files_close(f, XMP_CLOSE_NOOPTION));
+	BOOST_CHECK(xmp_free(xmp));
+	BOOST_CHECK(xmp_files_free(f));
+	xmp_terminate();
+
+	BOOST_CHECK(unlink("test.tif") == 0);
+	BOOST_CHECK(!g_lt->check_leaks());
+	BOOST_CHECK(!g_lt->check_errors());	
+}
 
 
 test_suite*
@@ -147,20 +190,11 @@ init_unit_test_suite( int argc, char * argv[] )
 {
     test_suite* test = BOOST_TEST_SUITE("test xmpfiles");
 	
-	if (argc == 1) {
-		// no argument, lets run like we are in "check"
-		const char * srcdir = getenv("srcdir");
-		
-		BOOST_ASSERT(srcdir != NULL);
-		g_testfile = std::string(srcdir);
-		g_testfile += "/../../samples/BlueSquares/BlueSquare.jpg";
-	}
-	else {
-		g_testfile = argv[1];
-	}
+	prepare_test(argc, argv, "../../samples/BlueSquares/BlueSquare.jpg");
 	
 	test->add(BOOST_TEST_CASE(&test_xmpfiles));
 	test->add(BOOST_TEST_CASE(&test_xmpfiles_write));
+	test->add(BOOST_TEST_CASE(&test_tiff_leak));
 	
     return test;
 }

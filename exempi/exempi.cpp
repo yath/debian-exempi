@@ -63,6 +63,20 @@ static void set_error(const XMP_Error & e)
 	std::cerr << e.GetErrMsg() << std::endl;
 }
 
+#define ASSIGN(dst, src) \
+	dst.year = src.year; \
+	dst.month = src.month;\
+	dst.day = src.day; \
+	dst.hour = src.hour; \
+	dst.minute = src.minute; \
+	dst.second = src.second; \
+	dst.tzSign = src.tzSign; \
+	dst.tzHour = src.tzHour; \
+	dst.tzMinute = src.tzMinute; \
+	dst.nanoSecond = src.nanoSecond;
+
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -78,6 +92,8 @@ const char NS_DC[] = kXMP_NS_DC;
 const char NS_EXIF_AUX[] = kXMP_NS_EXIF_Aux;
 const char NS_CRS[] = kXMP_NS_CameraRaw;
 const char NS_LIGHTROOM[] = "http://ns.adobe.com/lightroom/1.0/";
+const char NS_CAMERA_RAW_SETTINGS[] = kXMP_NS_CameraRaw;
+const char NS_CAMERA_RAW_SAVED_SETTINGS[] = "http://ns.adobe.com/camera-raw-saved-settings/1.0/";
 const char NS_PHOTOSHOP[] = kXMP_NS_Photoshop;
 const char NS_IPTC4XMP[] = kXMP_NS_IPTCCore;
 const char NS_TPG[] = kXMP_NS_XMP_PagedFile;
@@ -97,17 +113,14 @@ int xmp_get_error()
 
 bool xmp_init()
 {
-	bool ret = SXMPMeta::Initialize();
-	if (ret)
-		ret = SXMPFiles::Initialize();
-	return ret;
+	// no need to initialize anything else.
+	return SXMPFiles::Initialize();
 }
 
 
 void xmp_terminate()
 {
 	SXMPFiles::Terminate();
-	SXMPMeta::Terminate();
 }
 
 
@@ -233,7 +246,7 @@ bool xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp)
 bool xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp)
 {
 	CHECK_PTR(xf, false);
-	CHECK_PTR(xmp, NULL);
+	CHECK_PTR(xmp, false);
 	SXMPFiles *txf = (SXMPFiles*)xf;
 	
 	try {
@@ -362,7 +375,7 @@ bool xmp_get_property(XmpPtr xmp, const char *schema,
 		SXMPMeta *txmp = (SXMPMeta *)xmp;
 		XMP_OptionBits optionBits;
 		ret = txmp->GetProperty(schema, name, STRING(property), 
-																 &optionBits);
+								&optionBits);
 		if(propsBits) {
 			*propsBits = optionBits;
 		}
@@ -372,6 +385,116 @@ bool xmp_get_property(XmpPtr xmp, const char *schema,
 	}
 	return ret;
 }
+
+bool xmp_get_property_date(XmpPtr xmp, const char *schema, 
+					  const char *name, XmpDateTime *property,
+					  uint32_t *propsBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	try {
+		SXMPMeta *txmp = (SXMPMeta *)xmp;
+		XMP_OptionBits optionBits;
+		XMP_DateTime dt;
+//		memset((void*)&dt, 1, sizeof(XMP_DateTime)); 
+		ret = txmp->GetProperty_Date(schema, name, &dt, &optionBits);
+		ASSIGN((*property), dt);
+		if(propsBits) {
+			*propsBits = optionBits;
+		}
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	return ret;
+}
+
+bool xmp_get_property_float(XmpPtr xmp, const char *schema, 
+							const char *name, double * property,
+							uint32_t *propsBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	try {
+		SXMPMeta *txmp = (SXMPMeta *)xmp;
+		XMP_OptionBits optionBits;
+		ret = txmp->GetProperty_Float(schema, name, property, &optionBits);
+		if(propsBits) {
+			*propsBits = optionBits;
+		}
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	return ret;
+}
+
+bool xmp_get_property_bool(XmpPtr xmp, const char *schema, 
+							const char *name, bool * property,
+							uint32_t *propsBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	try {
+		SXMPMeta *txmp = (SXMPMeta *)xmp;
+		XMP_OptionBits optionBits;
+		ret = txmp->GetProperty_Bool(schema, name, property, &optionBits);
+		if(propsBits) {
+			*propsBits = optionBits;
+		}
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	return ret;
+}
+
+bool xmp_get_property_int32(XmpPtr xmp, const char *schema, 
+							const char *name, int32_t * property,
+							uint32_t *propsBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	try {
+		SXMPMeta *txmp = (SXMPMeta *)xmp;
+		XMP_OptionBits optionBits;
+		// the long converstion is needed until XMPCore is fixed it use proper types.
+		ret = txmp->GetProperty_Int(schema, name, property, &optionBits);
+		if(propsBits) {
+			*propsBits = optionBits;
+		}
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	return ret;
+}
+
+bool xmp_get_property_int64(XmpPtr xmp, const char *schema, 
+							const char *name, int64_t * property,
+							uint32_t *propsBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	try {
+		SXMPMeta *txmp = (SXMPMeta *)xmp;
+		XMP_OptionBits optionBits;
+		ret = txmp->GetProperty_Int64(schema, name, property, &optionBits);
+		if(propsBits) {
+			*propsBits = optionBits;
+		}
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	return ret;
+}
+
 
 
 bool xmp_get_array_item(XmpPtr xmp, const char *schema, 
@@ -406,6 +529,111 @@ bool xmp_set_property(XmpPtr xmp, const char *schema,
 	SXMPMeta *txmp = (SXMPMeta *)xmp;
 	try {
 		txmp->SetProperty(schema, name, value, optionBits);
+		ret = true;
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	catch(...) {
+	}
+	return ret;
+}
+
+
+bool xmp_set_property_date(XmpPtr xmp, const char *schema, 
+						   const char *name, const XmpDateTime *value,
+						   uint32_t optionBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	SXMPMeta *txmp = (SXMPMeta *)xmp;
+	try {
+		XMP_DateTime dt;
+		ASSIGN(dt, (*value));
+		txmp->SetProperty_Date(schema, name, dt, optionBits);
+		ret = true;
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	catch(...) {
+	}
+	return ret;
+}
+
+bool xmp_set_property_float(XmpPtr xmp, const char *schema, 
+							const char *name, double value,
+							uint32_t optionBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	SXMPMeta *txmp = (SXMPMeta *)xmp;
+	try {
+		txmp->SetProperty_Float(schema, name, value, optionBits);
+		ret = true;
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	catch(...) {
+	}
+	return ret;
+}
+
+
+bool xmp_set_property_bool(XmpPtr xmp, const char *schema, 
+						   const char *name, bool value,
+						   uint32_t optionBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	SXMPMeta *txmp = (SXMPMeta *)xmp;
+	try {
+		txmp->SetProperty_Bool(schema, name, value, optionBits);
+		ret = true;
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	catch(...) {
+	}
+	return ret;
+}
+
+
+bool xmp_set_property_int32(XmpPtr xmp, const char *schema, 
+							const char *name, int32_t value,
+							uint32_t optionBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	SXMPMeta *txmp = (SXMPMeta *)xmp;
+	try {
+		txmp->SetProperty_Int(schema, name, value, optionBits);
+		ret = true;
+	}
+	catch(const XMP_Error & e) {
+		set_error(e);
+	}
+	catch(...) {
+	}
+	return ret;
+}
+
+bool xmp_set_property_int64(XmpPtr xmp, const char *schema, 
+							const char *name, int64_t value,
+							uint32_t optionBits)
+{
+	CHECK_PTR(xmp, false);
+
+	bool ret = false;
+	SXMPMeta *txmp = (SXMPMeta *)xmp;
+	try {
+		txmp->SetProperty_Int64(schema, name, value, optionBits);
 		ret = true;
 	}
 	catch(const XMP_Error & e) {

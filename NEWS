@@ -1,3 +1,20 @@
+1.99.7
+
+- Bug: fix soversion.
+
+1.99.6
+
+- New: API xmp_get_property_date() / xmp_set_property_date() with tests.
+- New: API xmp_{get,set]_property_{float,bool,int32,int64}() with tests.
+- New: API add ACR schema namespaces.
+- Test: refactor a the tests preparation.
+- Test: add a test for multiple initializations.
+- Test: use valgrind is available.
+- Bug: fix configure to allow building on MacOS X. Closes bug #13596
+- Bug #13707: add autogen.sh
+- Bug #13713: fix boost macros to link boost.test statically (for 1.34).
+- Bug #13712: skip tests if no boost.
+
 1.99.5
 
 - ABI breakage: soversion is now 3
@@ -9,6 +26,7 @@
   passed NULL.
 - Bug: more exception handling and refactor set_error() use.
 - Bug: add AC_CONFIG_MACRO_DIR to configure.
+- Bug: Lower requirement for libboost to 1.33.0.
 - New: Doxygen API doc generation.
 
 1.99.4

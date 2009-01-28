@@ -49,6 +49,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -67,36 +68,45 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = test1$(EXEEXT) test2$(EXEEXT) test3$(EXEEXT)
-TESTS = testcore.sh test1$(EXEEXT) test2$(EXEEXT) test3$(EXEEXT)
+@WITH_UNIT_TEST_TRUE@check_PROGRAMS = test1$(EXEEXT) test2$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	test3$(EXEEXT) testinit$(EXEEXT)
+@WITH_UNIT_TEST_TRUE@TESTS = testcore.sh testinit$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	test1$(EXEEXT) test2$(EXEEXT) \
+@WITH_UNIT_TEST_TRUE@	test3$(EXEEXT)
 subdir = exempi/tests
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
+DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/ax_boost_base.m4 \
-	$(top_srcdir)/m4/ax_boost_unit_test_framework.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/boost.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
-am_test1_OBJECTS = test1.$(OBJEXT)
+am_test1_OBJECTS = test1.$(OBJEXT) utils.$(OBJEXT)
 test1_OBJECTS = $(am_test1_OBJECTS)
 test1_DEPENDENCIES = ../libexempi.la
 test1_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(test1_LDFLAGS) $(LDFLAGS) -o $@
-am_test2_OBJECTS = test2.$(OBJEXT)
+am_test2_OBJECTS = test2.$(OBJEXT) utils.$(OBJEXT)
 test2_OBJECTS = $(am_test2_OBJECTS)
 test2_DEPENDENCIES = ../libexempi.la
 test2_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(test2_LDFLAGS) $(LDFLAGS) -o $@
-am_test3_OBJECTS = test3.$(OBJEXT)
+am_test3_OBJECTS = test3.$(OBJEXT) utils.$(OBJEXT)
 test3_OBJECTS = $(am_test3_OBJECTS)
 test3_DEPENDENCIES = ../libexempi.la
 test3_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(test3_LDFLAGS) $(LDFLAGS) -o $@
+am_testinit_OBJECTS = testinit.$(OBJEXT) utils.$(OBJEXT)
+testinit_OBJECTS = $(am_testinit_OBJECTS)
+testinit_DEPENDENCIES = ../libexempi.la
+testinit_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(testinit_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -109,8 +119,11 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES)
-DIST_SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES)
+SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES) \
+	$(testinit_SOURCES)
+DIST_SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES) \
+	$(testinit_SOURCES)
+HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -122,8 +135,8 @@ AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BOOST_CPPFLAGS = @BOOST_CPPFLAGS@
-BOOST_LDFLAGS = @BOOST_LDFLAGS@
-BOOST_UNIT_TEST_FRAMEWORK_LIB = @BOOST_UNIT_TEST_FRAMEWORK_LIB@
+BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS = @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+BOOST_UNIT_TEST_FRAMEWORK_LIBS = @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -136,6 +149,7 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
+DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -147,6 +161,7 @@ EXEMPI_CURRENT = @EXEMPI_CURRENT@
 EXEMPI_CURRENT_MIN = @EXEMPI_CURRENT_MIN@
 EXEMPI_INCLUDE_BASE = @EXEMPI_INCLUDE_BASE@
 EXEMPI_MAJOR_VERSION = @EXEMPI_MAJOR_VERSION@
+EXEMPI_PLATFORM_DEF = @EXEMPI_PLATFORM_DEF@
 EXEMPI_REVISION = @EXEMPI_REVISION@
 EXEMPI_VERSION_INFO = @EXEMPI_VERSION_INFO@
 F77 = @F77@
@@ -179,6 +194,7 @@ SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+VALGRIND = @VALGRIND@
 VERSION = @VERSION@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -233,19 +249,24 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 INCLUDES = -I$(srcdir)/.. -I$(top_srcdir)/public/include
+@WITH_UNIT_TEST_TRUE@TESTS_ENVIRONMENT = TEST_DIR=$(srcdir) @VALGRIND@
 check_SCRIPTS = testcore.sh
 check_DATA = test1.xmp
+noinst_HEADERS = utils.h
 EXTRA_DIST = $(check_DATA) $(check_SCRIPTS)
 CLEANFILES = test.jpg
-test1_SOURCES = test1.cpp
-test1_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIB@
-test1_LDFLAGS = -static
-test2_SOURCES = test2.cpp
-test2_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIB@
-test2_LDFLAGS = -static
-test3_SOURCES = test3.cpp
-test3_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIB@
-test3_LDFLAGS = -static
+testinit_SOURCES = testinit.cpp utils.cpp
+testinit_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+testinit_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+test1_SOURCES = test1.cpp utils.cpp
+test1_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+test1_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+test2_SOURCES = test2.cpp utils.cpp
+test2_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+test2_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
+test3_SOURCES = test3.cpp utils.cpp
+test3_LDADD = ../libexempi.la @BOOST_UNIT_TEST_FRAMEWORK_LIBS@
+test3_LDFLAGS = -static @BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS@
 all: all-am
 
 .SUFFIXES:
@@ -295,6 +316,9 @@ test2$(EXEEXT): $(test2_OBJECTS) $(test2_DEPENDENCIES)
 test3$(EXEEXT): $(test3_OBJECTS) $(test3_DEPENDENCIES) 
 	@rm -f test3$(EXEEXT)
 	$(test3_LINK) $(test3_OBJECTS) $(test3_LDADD) $(LIBS)
+testinit$(EXEEXT): $(testinit_OBJECTS) $(testinit_DEPENDENCIES) 
+	@rm -f testinit$(EXEEXT)
+	$(testinit_LINK) $(testinit_OBJECTS) $(testinit_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -305,6 +329,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test1.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test3.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testinit.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utils.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -485,7 +511,7 @@ check-am: all-am
 	  $(check_DATA)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
-all-am: Makefile
+all-am: Makefile $(HEADERS)
 installdirs:
 install: install-am
 install-exec: install-exec-am
