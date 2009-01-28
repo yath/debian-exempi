@@ -1,4 +1,11 @@
-1.99.10
+2.0.1
+
+- Bug #14612: no stdbool.h for Sun compilers.
+- Bug #14613: check for iconv() const-ness.
+- Make the error checking more robust.
+- Make error code thread-safe (ie local to the thread).
+
+2.0.0
 
 - Bug #14614, Bug #15263: endian detection in configure.
 - Bug #14615: missing includes for Solaris.
