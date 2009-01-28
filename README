@@ -1,0 +1,5 @@
+exempi is a port of Adobe XMP SDK to work on UNIX
+and to be build with GNU automake.
+It includes XMPCore and XMPFiles.
+
+It is maintained by Hubert Figuiere <hub@figuiere.net>
