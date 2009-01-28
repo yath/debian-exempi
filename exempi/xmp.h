@@ -1,7 +1,7 @@
 /*
  * exempi - xmp.h
  *
- * Copyright (C) 2007 Hubert Figuiere
+ * Copyright (C) 2007-2008 Hubert Figuiere
  * Copyright 2002-2007 Adobe Systems Incorporated
  * All rights reserved.
  *
@@ -57,7 +57,7 @@ typedef enum {
 	XMP_OPEN_NOOPTION       = 0x00000000, /**< No open option */
 	XMP_OPEN_READ           = 0x00000001, /**< Open for read-only access. */
 	XMP_OPEN_FORUPDATE      = 0x00000002, /**< Open for reading and writing. */
-	XMP_OPEN_OPNLYXMP       = 0x00000004, /**< Only the XMP is wanted, 
+	XMP_OPEN_ONLYXMP        = 0x00000004, /**< Only the XMP is wanted, 
 										   * allows space/time optimizations. */
 	XMP_OPEN_CACHETNAIL     = 0x00000008, /**< Cache thumbnail if possible, 
 										   * GetThumbnail will be called. */

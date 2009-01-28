@@ -243,7 +243,7 @@ INCLUDES = -I$(top_srcdir)/public/include \
 	-I$(top_srcdir)/third-party/MD5
 
 AM_CXXFLAGS = -Wno-multichar -Wno-implicit -Wno-ctor-dtor-privacy \
-	-funsigned-char -fexceptions
+	-funsigned-char -fexceptions -fno-strict-aliasing
 
 AM_CPPFLAGS = -Wall\
 	-D@EXEMPI_PLATFORM_DEF@=1 -DXMP_IMPL=1 -DXMP_ClientBuild=0 \
@@ -270,9 +270,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  source/XMPFiles/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  source/XMPFiles/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  source/XMPFiles/Makefile
+	  $(AUTOMAKE) --foreign  source/XMPFiles/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

@@ -262,9 +262,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  source/XMPFiles/FormatSupport/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  source/XMPFiles/FormatSupport/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  source/XMPFiles/FormatSupport/Makefile
+	  $(AUTOMAKE) --foreign  source/XMPFiles/FormatSupport/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

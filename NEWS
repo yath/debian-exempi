@@ -1,3 +1,12 @@
+1.99.8
+
+- Bug #14049: don't run autoheader.
+- Bug #13712: add --enable-unittest to disable tests.
+- Bug: Disable strict aliasing in XMPFiles due to bad casting.
+- Bug #14200: fix a typo.
+- Bug: fix a couple of buffer overflows in GIF support. Closes Debian #454297.
+  Closes Gnome #484105
+
 1.99.7
 
 - Bug: fix soversion.
