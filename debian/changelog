@@ -1,9 +1,9 @@
-exempi (2.1.0-2) UNRELEASED; urgency=low
+exempi (2.1.0-2) experimental; urgency=low
 
   * debian/control
     - Update Vcs-* headers. Package is now managed with Git on git.debian.org.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 28 Jan 2009 21:01:09 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 28 Jan 2009 21:27:36 +0100
 
 exempi (2.1.0-1) experimental; urgency=low
 
