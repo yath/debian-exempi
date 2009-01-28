@@ -1,3 +1,32 @@
+2008-04-01  Hubert Figuiere  <hub@figuiere.net>
+
+	* configure.ac: This is really 2.0.0
+
+	* exempi/tests/test1.cpp, exempi/tests/test1.xmp:
+	Add a test on "Rating:".
+
+2008-03-30  Hubert Figuiere  <hub@figuiere.net>
+
+	* source/XMPFiles/FormatSupport/EndianUtils.hpp,
+	configure.ac: Fix the endian detection. (Closes #15263)
+
+2008-02-22  Hubert Figuiere  <hub@figuiere.net>
+
+	* source/XMPCore/XMPMeta.cpp, 
+	source/XMPFiles/FormatSupport/GIF_Support.cpp,
+	source/XMPFiles/FormatSupport/ID3_Support.cpp,
+	source/XMPFiles/FormatSupport/PNG_Support.cpp,
+	source/XMPFiles/FormatSupport/PSIR_FileWriter.cpp,
+	source/XMPFiles/FormatSupport/PSIR_MemoryReader.cpp,
+	source/XMPFiles/FormatSupport/ReconcileIPTC.cpp,
+	source/XMPFiles/FormatSupport/TIFF_Support.hpp:
+	Add some missing includes. (Closes #14615)
+
+	* source/XMPFiles/FormatSupport/EndianUtils.hpp: endian
+	detection on Solaris. (Closes #14614)
+
+=== 1.99.9 ===
+
 2008-01-30  Hubert Figuiere  <hub@figuiere.net>
 
 	* exempi/xmp.h (XMP_OPEN_OPNLYXMP): Bad API breakage fix (introduced
