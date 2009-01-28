@@ -1,6 +1,6 @@
 AC_PREREQ(2.50)
 AC_INIT(exempi/xmp.h)
-AM_INIT_AUTOMAKE(exempi, 1.99.4)
+AM_INIT_AUTOMAKE(exempi, 1.99.5)
 AM_MAINTAINER_MODE
 
 
@@ -31,9 +31,11 @@ dnl 1.99.1 is the revision 3 1 0
 dnl 1.99.2 is the revision 4 2 0
 dnl 1.99.3 is the revision 5 3 0
 dnl 1.99.4 is the revision 6 4 0
+dnl ABI breakage reset major to 3
+dnl 1.99.5 is the revision 3.0.0
 AC_SUBST([EXEMPI_REVISION], [0])
-AC_SUBST([EXEMPI_AGE],      [4])
-AC_SUBST([EXEMPI_CURRENT],  [6])
+AC_SUBST([EXEMPI_AGE],      [0])
+AC_SUBST([EXEMPI_CURRENT],  [3])
 AC_SUBST([EXEMPI_CURRENT_MIN],
          [`expr $EXEMPI_CURRENT - $EXEMPI_AGE`])
 AC_SUBST([EXEMPI_VERSION_INFO],
@@ -53,6 +55,7 @@ dnl --------------------------------------------------------------------
 pkgconfigdir='${libdir}/pkgconfig'
 AC_SUBST(pkgconfigdir)
 
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CC
 AC_PROG_CXX
@@ -85,6 +88,8 @@ public/Makefile
 public/include/Makefile
 public/include/client-glue/Makefile
 exempi/Makefile
+exempi/doc/Makefile
+exempi/doc/Doxyfile
 exempi/tests/Makefile
 exempi/exempi-2.0.pc
 ])
