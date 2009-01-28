@@ -9,7 +9,7 @@ dnl the same distribution terms as the rest of that program.
 
 AC_PREREQ(2.50)
 AC_INIT(exempi/xmp.h)
-AM_INIT_AUTOMAKE(exempi, 2.0.2)
+AM_INIT_AUTOMAKE(exempi, 2.1.0)
 AM_MAINTAINER_MODE
 
 dnl ---------------------------------------------------------------------------
@@ -48,9 +48,10 @@ dnl 1.99.9 is the revision 4.1.1 (no library change have been made)
 dnl 2.0.0 is the revision 4.1.2
 dnl 2.0.1 is the revision 4.1.3
 dnl 2.0.2 is the revision 4.1.4
-AC_SUBST([EXEMPI_REVISION], [4])
-AC_SUBST([EXEMPI_AGE],      [1])
-AC_SUBST([EXEMPI_CURRENT],  [4])
+dnl 2.1.0 is the revision 5.2.0
+AC_SUBST([EXEMPI_REVISION], [0])
+AC_SUBST([EXEMPI_AGE],      [2])
+AC_SUBST([EXEMPI_CURRENT],  [5])
 AC_SUBST([EXEMPI_CURRENT_MIN],
          [`expr $EXEMPI_CURRENT - $EXEMPI_AGE`])
 AC_SUBST([EXEMPI_VERSION_INFO],
@@ -99,6 +100,8 @@ AC_CHECK_HEADER(expat.h, ,
 	 AC_MSG_ERROR([expat headers missing]))
 AC_CHECK_HEADER(iconv.h, ,
 	 AC_MSG_ERROR([iconv headers missing]))
+AC_CHECK_HEADER(zlib.h, ,
+	 AC_MSG_ERROR([zlib headers missing]))
 
 dnl Blatently copied from iconv.m4 to remove the crack about libtool
 dnl But check for constness of the iconv parameters.
@@ -190,7 +193,7 @@ source/XMPFiles/FileHandlers/Makefile
 source/XMPFiles/FormatSupport/Makefile
 samples/Makefile
 samples/source/Makefile
-samples/BlueSquares/Makefile
+samples/testfiles/Makefile
 build/Makefile
 public/Makefile
 public/include/Makefile

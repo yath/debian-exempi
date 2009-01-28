@@ -1,7 +1,7 @@
 #
 # exempi - Makefile.am
 #
-# Copyright (C) 2007 Hubert Figuiere
+# Copyright (C) 2007-2008 Hubert Figuiere
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ exempi_HEADERS = xmp.h xmpconsts.h xmperrors.h
 
 INCLUDES = -I$(top_srcdir)/public/include
 
-AM_CPPFLAGS = -Wall
+AM_CPPFLAGS = -Wall -D@EXEMPI_PLATFORM_DEF@=1
 lib_LTLIBRARIES = libexempi.la
 
 pkgconfig_DATA = exempi-@EXEMPI_MAJOR_VERSION@.pc
@@ -53,5 +53,9 @@ libexempi_la_LIBADD = $(top_builddir)/source/common/libxmpcommon.la \
 	$(top_builddir)/source/XMPCore/libXMPCore.la \
 	$(top_builddir)/source/XMPFiles/libXMPFiles.la \
 	$(top_builddir)/third-party/MD5/libmd5.la \
-	-lexpat 
-libexempi_la_LDFLAGS = -version-info @EXEMPI_VERSION_INFO@
+	-lexpat -lz
+libexempi_la_LDFLAGS = -version-info @EXEMPI_VERSION_INFO@ \
+	-Wl,--retain-symbols-file=$(srcdir)/libexempi.sym
+
+EXTRA_DIST = libexempi.sym
+

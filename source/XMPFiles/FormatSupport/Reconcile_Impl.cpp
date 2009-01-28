@@ -110,10 +110,10 @@ bool ReconcileUtils::IsUTF8 ( const void * utf8Ptr, size_t utf8Len )
 		LPCWSTR utf16Ptr = (LPCWSTR) utf16.c_str();
 		size_t  utf16Len = utf16.size() / 2;
 	
-		int hostLen = WideCharToMultiByte ( codePage, 0, utf16Ptr, utf16Len, 0, 0, 0, 0 );
+		int hostLen = WideCharToMultiByte ( codePage, 0, utf16Ptr, (int)utf16Len, 0, 0, 0, 0 );
 		host->assign ( hostLen, ' ' );	// Allocate space for the results.
 	
-		(void) WideCharToMultiByte ( codePage, 0, utf16Ptr, utf16Len, (LPSTR)host->data(), hostLen, 0, 0 );
+		(void) WideCharToMultiByte ( codePage, 0, utf16Ptr, (int)utf16Len, (LPSTR)host->data(), hostLen, 0, 0 );
 		XMP_Assert ( hostLen == host->size() );
 	
 	}	// UTF8ToWinEncoding
@@ -222,6 +222,7 @@ void ReconcileUtils::UTF8ToLocal ( const void * _utf8Ptr, size_t utf8Len, std::s
 //
 // Actually to the Windows code page 1252 superset of 8859-1.
 
+
 void ReconcileUtils::UTF8ToLatin1 ( const void * _utf8Ptr, size_t utf8Len, std::string * latin1 )
 {
 	const XMP_Uns8* utf8Ptr = (XMP_Uns8*)_utf8Ptr;
@@ -264,6 +265,7 @@ void ReconcileUtils::UTF8ToLatin1 ( const void * _utf8Ptr, size_t utf8Len, std::
 
 }	// ReconcileUtils::UTF8ToLatin1
 
+
 // =================================================================================================
 // HostEncodingToUTF8
 // ==================
@@ -274,11 +276,11 @@ void ReconcileUtils::UTF8ToLatin1 ( const void * _utf8Ptr, size_t utf8Len, std::
 									const XMP_Uns8 * hostPtr, size_t hostLen, std::string * utf8 )
 	{
 
-		size_t utf16Len = MultiByteToWideChar ( codePage, 0, (LPCSTR)hostPtr, hostLen, 0, 0 );
+		int utf16Len = MultiByteToWideChar ( codePage, 0, (LPCSTR)hostPtr, (int)hostLen, 0, 0 );
 		std::vector<UTF16Unit> utf16 ( utf16Len, 0 );	// MultiByteToWideChar returns native UTF-16.
 
-		(void) MultiByteToWideChar ( codePage, 0, (LPCSTR)hostPtr, hostLen, (LPWSTR)&utf16[0], utf16Len );
-		FromUTF16Native ( &utf16[0], utf16Len, utf8 );
+		(void) MultiByteToWideChar ( codePage, 0, (LPCSTR)hostPtr, (int)hostLen, (LPWSTR)&utf16[0], utf16Len );
+		FromUTF16Native ( &utf16[0], (int)utf16Len, utf8 );
 	
 	}	// WinEncodingToUTF8
 
@@ -332,7 +334,6 @@ void ReconcileUtils::UTF8ToLatin1 ( const void * _utf8Ptr, size_t utf8Len, std::
 
 #elif XMP_UNIXBuild
 
-
 #endif
 
 // =================================================================================================
@@ -372,6 +373,7 @@ void ReconcileUtils::LocalToUTF8 ( const void * _localPtr, size_t localLen, std:
 	#endif
 
 }	// ReconcileUtils::LocalToUTF8
+
 
 // =================================================================================================
 // ReconcileUtils::Latin1ToUTF8
@@ -419,3 +421,4 @@ void ReconcileUtils::Latin1ToUTF8 ( const void * _latin1Ptr, size_t latin1Len, s
 	#endif
 
 }	// ReconcileUtils::Latin1ToUTF8
+

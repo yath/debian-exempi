@@ -50,7 +50,6 @@
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -70,22 +69,27 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 subdir = source/XMPFiles/FileHandlers
-DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_tls.m4 \
-	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libxmpfilehandlers_la_LIBADD =
-am_libxmpfilehandlers_la_OBJECTS = AVI_Handler.lo InDesign_Handler.lo \
-	MPEG_Handler.lo PostScript_Handler.lo Scanner_Handler.lo \
-	Trivial_Handler.lo Basic_Handler.lo JPEG_Handler.lo \
-	MP3_Handler.lo PNG_Handler.lo PSD_Handler.lo TIFF_Handler.lo \
-	WAV_Handler.lo GIF_Handler.lo
+am_libxmpfilehandlers_la_OBJECTS = ASF_Handler.lo AVCHD_Handler.lo \
+	AVI_Handler.lo Basic_Handler.lo FLV_Handler.lo GIF_Handler.lo \
+	InDesign_Handler.lo JPEG_Handler.lo MP3_Handler.lo \
+	MPEG2_Handler.lo MPEG4_Handler.lo P2_Handler.lo PNG_Handler.lo \
+	PostScript_Handler.lo PSD_Handler.lo Scanner_Handler.lo \
+	SonyHDV_Handler.lo SWF_Handler.lo TIFF_Handler.lo \
+	Trivial_Handler.lo UCF_Handler.lo WAV_Handler.lo \
+	XDCAMEX_Handler.lo XDCAM_Handler.lo
 libxmpfilehandlers_la_OBJECTS = $(am_libxmpfilehandlers_la_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -99,9 +103,17 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 SOURCES = $(libxmpfilehandlers_la_SOURCES)
 DIST_SOURCES = $(libxmpfilehandlers_la_SOURCES)
-HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -129,7 +141,7 @@ DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DISTCHECK_CONFIGURE_FLAGS = @DISTCHECK_CONFIGURE_FLAGS@
 DSYMUTIL = @DSYMUTIL@
-ECHO = @ECHO@
+DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
@@ -143,25 +155,30 @@ EXEMPI_MAJOR_VERSION = @EXEMPI_MAJOR_VERSION@
 EXEMPI_PLATFORM_DEF = @EXEMPI_PLATFORM_DEF@
 EXEMPI_REVISION = @EXEMPI_REVISION@
 EXEMPI_VERSION_INFO = @EXEMPI_VERSION_INFO@
-F77 = @F77@
-FFLAGS = @FFLAGS@
+FGREP = @FGREP@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+NM = @NM@
 NMEDIT = @NMEDIT@
+OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
+OTOOL = @OTOOL@
+OTOOL64 = @OTOOL64@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -182,7 +199,7 @@ abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_F77 = @ac_ct_F77@
+ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -213,6 +230,7 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
+lt_ECHO = @lt_ECHO@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
@@ -226,17 +244,12 @@ sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LTLIBRARIES = libxmpfilehandlers.la
-noinst_HEADERS = AVI_Handler.hpp    InDesign_Handler.hpp  MOV_Handler.hpp  \
-	MPEG_Handler.hpp  PostScript_Handler.hpp  \
-	Scanner_Handler.hpp  Trivial_Handler.hpp\
-	Basic_Handler.hpp  JPEG_Handler.hpp      \
-	MP3_Handler.hpp  PNG_Handler.hpp   PSD_Handler.hpp \
-	TIFF_Handler.hpp     WAV_Handler.hpp  GIF_Handler.hpp
-
 INCLUDES = -I$(srcdir)/.. -I$(srcdir)/../FormatSupport \
+	-I$(top_srcdir)/source/common/ \
 	-I$(top_srcdir)/public/include/ -I$(top_srcdir)/build/ \
 	-I$(top_srcdir)/third-party/MD5
 
@@ -244,12 +257,33 @@ AM_CPPFLAGS = \
 	-D@EXEMPI_PLATFORM_DEF@=1 -DXMP_IMPL=1 -DXMP_ClientBuild=0 \
 	-D_FILE_OFFSET_BITS=64 -DHAVE_EXPAT_CONFIG_H=1 -DXML_STATIC=1
 
-libxmpfilehandlers_la_SOURCES = AVI_Handler.cpp    InDesign_Handler.cpp \
-	MPEG_Handler.cpp  PostScript_Handler.cpp  Scanner_Handler.cpp  \
-	Trivial_Handler.cpp \
-	Basic_Handler.cpp  JPEG_Handler.cpp      MP3_Handler.cpp  \
-	PNG_Handler.cpp   PSD_Handler.cpp         TIFF_Handler.cpp     \
-	WAV_Handler.cpp  GIF_Handler.cpp
+libxmpfilehandlers_la_SOURCES = \
+ASF_Handler.cpp ASF_Handler.hpp\
+AVCHD_Handler.cpp AVCHD_Handler.hpp\
+AVI_Handler.cpp AVI_Handler.hpp\
+Basic_Handler.cpp Basic_Handler.hpp\
+FLV_Handler.cpp FLV_Handler.hpp\
+GIF_Handler.cpp GIF_Handler.hpp\
+InDesign_Handler.cpp InDesign_Handler.hpp\
+JPEG_Handler.cpp JPEG_Handler.hpp\
+MP3_Handler.cpp MP3_Handler.hpp\
+MOV_Handler.hpp\
+MPEG2_Handler.cpp MPEG2_Handler.hpp \
+MPEG4_Handler.cpp MPEG4_Handler.hpp \
+P2_Handler.cpp P2_Handler.hpp\
+PNG_Handler.cpp PNG_Handler.hpp\
+PostScript_Handler.cpp PostScript_Handler.hpp\
+PSD_Handler.cpp PSD_Handler.hpp\
+Scanner_Handler.cpp Scanner_Handler.hpp\
+SonyHDV_Handler.cpp SonyHDV_Handler.hpp\
+SWF_Handler.cpp SWF_Handler.hpp\
+TIFF_Handler.cpp TIFF_Handler.hpp\
+Trivial_Handler.cpp Trivial_Handler.hpp\
+UCF_Handler.cpp UCF_Handler.hpp\
+WAV_Handler.cpp WAV_Handler.hpp\
+XDCAMEX_Handler.cpp XDCAMEX_Handler.hpp\
+XDCAM_Handler.cpp XDCAM_Handler.hpp\
+$(NULL)
 
 all: all-am
 
@@ -264,9 +298,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__confi
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  source/XMPFiles/FileHandlers/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  source/XMPFiles/FileHandlers/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  source/XMPFiles/FileHandlers/Makefile
+	  $(AUTOMAKE) --gnu  source/XMPFiles/FileHandlers/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -302,20 +336,30 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ASF_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AVCHD_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AVI_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Basic_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FLV_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GIF_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InDesign_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JPEG_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MP3_Handler.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MPEG_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MPEG2_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MPEG4_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/P2_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PNG_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PSD_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PostScript_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SWF_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Scanner_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SonyHDV_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TIFF_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Trivial_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/UCF_Handler.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/WAV_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XDCAMEX_Handler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/XDCAM_Handler.Plo@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -419,7 +463,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES)
 installdirs:
 install: install-am
 install-exec: install-exec-am
