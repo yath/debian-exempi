@@ -1,6 +1,10 @@
 exempi (2.1.0-3) UNRELEASED; urgency=low
 
   * Merge changes from experimental branch.
+  * debian/compat
+    - Bump to debhelper v7 compat mode.
+  * debian/control
+    - Bump Build-Depends on debhelper to (>= 7).
 
  -- Michael Biebl <biebl@debian.org>  Sun, 15 Feb 2009 22:04:46 +0100
 
