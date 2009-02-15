@@ -1,4 +1,4 @@
-exempi (2.1.0-3) UNRELEASED; urgency=low
+exempi (2.1.0-3) unstable; urgency=low
 
   * Merge changes from experimental branch.
   * debian/compat
@@ -6,7 +6,7 @@ exempi (2.1.0-3) UNRELEASED; urgency=low
   * debian/control
     - Bump Build-Depends on debhelper to (>= 7).
 
- -- Michael Biebl <biebl@debian.org>  Sun, 15 Feb 2009 22:04:46 +0100
+ -- Michael Biebl <biebl@debian.org>  Mon, 16 Feb 2009 00:44:01 +0100
 
 exempi (2.1.0-2) experimental; urgency=low
 
