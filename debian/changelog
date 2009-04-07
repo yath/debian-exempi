@@ -1,3 +1,9 @@
+exempi (2.1.0-4) UNRELEASED; urgency=low
+
+  * Bump Standards-Version to 3.8.1. No further changes.
+
+ -- Michael Biebl <biebl@debian.org>  Tue, 07 Apr 2009 22:26:43 +0200
+
 exempi (2.1.0-3) unstable; urgency=low
 
   * Merge changes from experimental branch.
