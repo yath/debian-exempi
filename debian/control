@@ -34,6 +34,7 @@ Description: library to parse XMP metadata (Development files)
  and many image formats, though it is designed to support nearly any file type.
 
 Package: libexempi3-dbg
+Section: debug
 Architecture: any
 Priority: extra
 Depends: libexempi3 (= ${binary:Version}), ${misc:Depends}
