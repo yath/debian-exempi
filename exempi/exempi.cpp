@@ -1,7 +1,7 @@
 /*
  * exempi - exempi.cpp
  *
- * Copyright (C) 2007-2008 Hubert Figuiere
+ * Copyright (C) 2007-2009 Hubert Figuiere
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -341,8 +341,16 @@ bool xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp)
 	CHECK_PTR(xf, false);
 	RESET_ERROR;
 	SXMPFiles *txf = (SXMPFiles*)xf;
+  bool result = false;
 
-	return txf->CanPutXMP(*(SXMPMeta*)xmp);
+  try {
+    result = txf->CanPutXMP(*(SXMPMeta*)xmp);
+  }
+	catch(const XMP_Error & e) {
+		set_error(e);
+		return false;
+	}
+  return result;
 }
 
 
@@ -646,17 +654,13 @@ bool xmp_set_property(XmpPtr xmp, const char *schema,
 
 	bool ret = false;
 	SXMPMeta *txmp = (SXMPMeta *)xmp;
-
-#if 0
-    // for bug #16030
-    // XMP_SDK does not like a "" string.
-    if ((optionBits & (XMP_PROP_VALUE_IS_STRUCT | XMP_PROP_VALUE_IS_ARRAY)) 
-        && (*value == 0))
-    {
-        value = NULL;
-    }
-#endif
-
+	// see bug #16030
+	// when it is a struct or an array, get prop return an empty string
+	// but it fail if passed an empty string
+	if ((optionBits & (XMP_PROP_VALUE_IS_STRUCT | XMP_PROP_VALUE_IS_ARRAY)) 
+			&& (*value == 0)) {
+		value = NULL;
+	}
 	try {
 		txmp->SetProperty(schema, name, value, optionBits);
 		ret = true;
