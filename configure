@@ -786,6 +786,12 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+SHAVE_SAVED_CXX
+SHAVE_SAVED_CC
+SHAVE_SAVED_LIBTOOL
+AM_MAKEFLAGS
+MAKEFLAGS
+shavedir
 VALGRIND
 WITH_UNIT_TEST_FALSE
 WITH_UNIT_TEST_TRUE
@@ -794,6 +800,8 @@ BOOST_UNIT_TEST_FRAMEWORK_LIBS
 BOOST_UNIT_TEST_FRAMEWORK_LDFLAGS
 BOOST_CPPFLAGS
 DISTCHECK_CONFIGURE_FLAGS
+HAVE_SYMBOLS_FILE_FALSE
+HAVE_SYMBOLS_FILE_TRUE
 CXXCPP
 CPP
 OTOOL64
@@ -2395,7 +2403,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=exempi
- VERSION=2.1.0
+ VERSION=2.1.1
 
 
 cat >>confdefs.h <<_ACEOF
@@ -2560,7 +2568,7 @@ fi
 
 
 
-EXEMPI_REVISION=0
+EXEMPI_REVISION=1
 
 EXEMPI_AGE=2
 
@@ -4867,13 +4875,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:4870: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:4878: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4873: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:4881: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:4876: output\"" >&5)
+  (eval echo "\"\$as_me:4884: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -6079,7 +6087,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6082 "configure"' > conftest.$ac_ext
+  echo '#line 6090 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8655,11 +8663,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8658: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8666: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8662: \$? = $ac_status" >&5
+   echo "$as_me:8670: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8994,11 +9002,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8997: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9005: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9001: \$? = $ac_status" >&5
+   echo "$as_me:9009: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9099,11 +9107,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9102: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9110: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9106: \$? = $ac_status" >&5
+   echo "$as_me:9114: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9154,11 +9162,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9157: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9165: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9161: \$? = $ac_status" >&5
+   echo "$as_me:9169: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11006,10 +11014,13 @@ rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
   # before this can be enabled.
   hardcode_into_libs=yes
 
+  # Add ABI-specific directories to the system library path.
+  sys_lib_dlsearch_path_spec="/lib64 /usr/lib64 /lib /usr/lib"
+
   # Append ld.so.conf contents to the search path
   if test -f /etc/ld.so.conf; then
     lt_ld_extra=`awk '/^include / { system(sprintf("cd /etc; cat %s 2>/dev/null", \$2)); skip = 1; } { if (!skip) print \$0; skip = 0; }' < /etc/ld.so.conf | $SED -e 's/#.*//;/^[	 ]*hwcap[	 ]/d;s/[:,	]/ /g;s/=[^=]*$//;s/=[^= ]* / /g;/^$/d' | tr '\n' ' '`
-    sys_lib_dlsearch_path_spec="/lib /usr/lib $lt_ld_extra"
+    sys_lib_dlsearch_path_spec="$sys_lib_dlsearch_path_spec $lt_ld_extra"
   fi
 
   # We used to test for /lib/ld.so.1 and disable shared libraries on
@@ -11954,7 +11965,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11957 "configure"
+#line 11968 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12050,7 +12061,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12053 "configure"
+#line 12064 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14070,11 +14081,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14073: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14084: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14077: \$? = $ac_status" >&5
+   echo "$as_me:14088: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14169,11 +14180,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14172: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14183: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14176: \$? = $ac_status" >&5
+   echo "$as_me:14187: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14221,11 +14232,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14224: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14235: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14228: \$? = $ac_status" >&5
+   echo "$as_me:14239: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14868,10 +14879,13 @@ rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
   # before this can be enabled.
   hardcode_into_libs=yes
 
+  # Add ABI-specific directories to the system library path.
+  sys_lib_dlsearch_path_spec="/lib64 /usr/lib64 /lib /usr/lib"
+
   # Append ld.so.conf contents to the search path
   if test -f /etc/ld.so.conf; then
     lt_ld_extra=`awk '/^include / { system(sprintf("cd /etc; cat %s 2>/dev/null", \$2)); skip = 1; } { if (!skip) print \$0; skip = 0; }' < /etc/ld.so.conf | $SED -e 's/#.*//;/^[	 ]*hwcap[	 ]/d;s/[:,	]/ /g;s/=[^=]*$//;s/=[^= ]* / /g;/^$/d' | tr '\n' ' '`
-    sys_lib_dlsearch_path_spec="/lib /usr/lib $lt_ld_extra"
+    sys_lib_dlsearch_path_spec="$sys_lib_dlsearch_path_spec $lt_ld_extra"
   fi
 
   # We used to test for /lib/ld.so.1 and disable shared libraries on
@@ -16211,6 +16225,120 @@ _ACEOF
 
 fi
 
+cat >> _ac_foo.sym << _ACEOF
+foo
+_ACEOF
+
+
+
+
+
+  flag=`echo "-Wl,--retain-symbols-file=_ac_foo.sym" | $SED 'y% .=/+-(){}<>:*,%_______________%'`
+
+  { $as_echo "$as_me:$LINENO: checking whether the linker accepts the -Wl,--retain-symbols-file=_ac_foo.sym flag" >&5
+$as_echo_n "checking whether the linker accepts the -Wl,--retain-symbols-file=_ac_foo.sym flag... " >&6; }
+if { as_var=ax_cv_ld_check_flag_$flag; eval "test \"\${$as_var+set}\" = set"; }; then
+  $as_echo_n "(cached) " >&6
+else
+
+
+    #AC_LANG_PUSH([C])
+
+    save_LDFLAGS="$LDFLAGS"
+    LDFLAGS="$LDFLAGS -Wl,--retain-symbols-file=_ac_foo.sym"
+    cat >conftest.$ac_ext <<_ACEOF
+
+      /* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
+$as_echo "$ac_try_echo") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext && {
+	 test "$cross_compiling" = yes ||
+	 $as_test_x conftest$ac_exeext
+       }; then
+
+      eval "ax_cv_ld_check_flag_$flag=yes"
+
+else
+  $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+
+      eval "ax_cv_ld_check_flag_$flag=no"
+
+fi
+
+rm -rf conftest.dSYM
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+
+    LDFLAGS="$save_LDFLAGS"
+
+    #AC_LANG_POP
+
+
+fi
+ac_res=`eval 'as_val=${'ax_cv_ld_check_flag_$flag'}
+		 $as_echo "$as_val"'`
+	       { $as_echo "$as_me:$LINENO: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+
+  if eval "test \"`echo '$ax_cv_ld_check_flag_'$flag`\" = yes"; then
+
+    :
+
+cv_support_symfile=yes
+
+
+else
+
+    :
+
+cv_support_symfile=no
+
+
+fi
+
+
+rm -f _ac_foo.sym
+ if test x$cv_support_symfile = "xyes"; then
+  HAVE_SYMBOLS_FILE_TRUE=
+  HAVE_SYMBOLS_FILE_FALSE='#'
+else
+  HAVE_SYMBOLS_FILE_TRUE='#'
+  HAVE_SYMBOLS_FILE_FALSE=
+fi
+
+
+
 # Check whether --enable-unittest was given.
 if test "${enable_unittest+set}" = set; then
   enableval=$enable_unittest; ENABLE_UNITTEST=$enableval
@@ -16885,7 +17013,7 @@ case $build_vendor in
 	apple)
 		EXEMPI_PLATFORM_DEF=MAC_ENV
 		CPPFLAGS="$CPPFLAGS -I/Developer/Headers/FlatCarbon"
-		LDFLAGS="$LDFLAGS -framework CoreServices"
+		LDFLAGS="$LDFLAGS -framework CoreServices -framework QuickTime"
 		;;
 	*)
 		EXEMPI_PLATFORM_DEF=UNIX_ENV
@@ -17100,7 +17228,65 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile third-party/Makefile third-party/MD5/Makefile source/Makefile source/common/Makefile source/XMPCore/Makefile source/XMPFiles/Makefile source/XMPFiles/FileHandlers/Makefile source/XMPFiles/FormatSupport/Makefile samples/Makefile samples/source/Makefile samples/testfiles/Makefile build/Makefile public/Makefile public/include/Makefile public/include/client-glue/Makefile exempi/Makefile exempi/doc/Makefile exempi/doc/Doxyfile exempi/tests/Makefile exempi/exempi-2.0.pc"
+shavedir='$(top_builddir)'
+
+MAKEFLAGS=-s
+
+AM_MAKEFLAGS='`test -z $V && echo -s`'
+
+# Extract the first word of "sed", so it can be a program name with args.
+set dummy sed; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_prog_SED+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$SED"; then
+  ac_cv_prog_SED="$SED" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_prog_SED="sed"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_prog_SED" && ac_cv_prog_SED="false"
+fi
+fi
+SED=$ac_cv_prog_SED
+if test -n "$SED"; then
+  { $as_echo "$as_me:$LINENO: result: $SED" >&5
+$as_echo "$SED" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+SHAVE_SAVED_LIBTOOL=$LIBTOOL
+
+LIBTOOL="\$(SHELL) \$(shavedir)/shave-libtool '\$(SHAVE_SAVED_LIBTOOL)'"
+
+SHAVE_SAVED_CC=$CC
+SHAVE_SAVED_CXX=$CXX
+
+
+CC="\$(SHELL) \$(shavedir)/shave cc '\$(SHAVE_SAVED_CC)'"
+CXX="\$(SHELL) \$(shavedir)/shave cxx '\$(SHAVE_SAVED_CXX)'"
+
+
+
+
+ac_config_files="$ac_config_files Makefile shave shave-libtool third-party/Makefile third-party/MD5/Makefile source/Makefile source/common/Makefile source/XMPCore/Makefile source/XMPFiles/Makefile source/XMPFiles/FileHandlers/Makefile source/XMPFiles/FormatSupport/Makefile samples/Makefile samples/source/Makefile samples/testfiles/Makefile build/Makefile public/Makefile public/include/Makefile public/include/client-glue/Makefile exempi/Makefile exempi/doc/Makefile exempi/doc/Doxyfile exempi/tests/Makefile exempi/exempi-2.0.pc"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -17271,6 +17457,13 @@ Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
 
+if test -z "${HAVE_SYMBOLS_FILE_TRUE}" && test -z "${HAVE_SYMBOLS_FILE_FALSE}"; then
+  { { $as_echo "$as_me:$LINENO: error: conditional \"HAVE_SYMBOLS_FILE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+$as_echo "$as_me: error: conditional \"HAVE_SYMBOLS_FILE\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${WITH_UNIT_TEST_TRUE}" && test -z "${WITH_UNIT_TEST_FALSE}"; then
   { { $as_echo "$as_me:$LINENO: error: conditional \"WITH_UNIT_TEST\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -18119,6 +18312,8 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "shave") CONFIG_FILES="$CONFIG_FILES shave" ;;
+    "shave-libtool") CONFIG_FILES="$CONFIG_FILES shave-libtool" ;;
     "third-party/Makefile") CONFIG_FILES="$CONFIG_FILES third-party/Makefile" ;;
     "third-party/MD5/Makefile") CONFIG_FILES="$CONFIG_FILES third-party/MD5/Makefile" ;;
     "source/Makefile") CONFIG_FILES="$CONFIG_FILES source/Makefile" ;;
@@ -18617,7 +18812,16 @@ $as_echo "$as_me: executing $ac_file commands" >&6;}
 
 
   case $ac_file$ac_mode in
-    "depfiles":C) test x"$AMDEP_TRUE" != x"" || for mf in $CONFIG_FILES; do
+    "depfiles":C) test x"$AMDEP_TRUE" != x"" || # Autoconf 2.62 quotes --file arguments for eval, but not when files
+# are listed without --file.  Let's play safe and only enable the eval
+# if we detect the quoting.
+case $CONFIG_FILES in
+*\'*) eval set x "$CONFIG_FILES" ;;
+*)   set x $CONFIG_FILES ;;
+esac
+shift
+for mf
+do
   # Strip MF so we end up with the name of the file.
   mf=`echo "$mf" | sed -e 's/:.*$//'`
   # Check whether this is an Automake generated Makefile or not.

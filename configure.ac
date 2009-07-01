@@ -9,7 +9,7 @@ dnl the same distribution terms as the rest of that program.
 
 AC_PREREQ(2.50)
 AC_INIT(exempi/xmp.h)
-AM_INIT_AUTOMAKE(exempi, 2.1.0)
+AM_INIT_AUTOMAKE(exempi, 2.1.1)
 AM_MAINTAINER_MODE
 
 dnl ---------------------------------------------------------------------------
@@ -49,7 +49,8 @@ dnl 2.0.0 is the revision 4.1.2
 dnl 2.0.1 is the revision 4.1.3
 dnl 2.0.2 is the revision 4.1.4
 dnl 2.1.0 is the revision 5.2.0
-AC_SUBST([EXEMPI_REVISION], [0])
+dnl 2.1.1 is the revision 5.2.1
+AC_SUBST([EXEMPI_REVISION], [1])
 AC_SUBST([EXEMPI_AGE],      [2])
 AC_SUBST([EXEMPI_CURRENT],  [5])
 AC_SUBST([EXEMPI_CURRENT_MIN],
@@ -136,6 +137,22 @@ if test "$ac_cv_tls" != "none"; then
 fi
 dnl end TLS
 
+dnl check LD Flags
+dnl we need a valid symfile. Make one.
+cat >> _ac_foo.sym << _ACEOF
+foo
+_ACEOF
+AX_LD_CHECK_FLAG([-Wl,--retain-symbols-file=_ac_foo.sym],[],[],[
+dnl success
+cv_support_symfile=yes
+],[
+dnl fail
+cv_support_symfile=no
+])
+rm -f _ac_foo.sym
+AM_CONDITIONAL(HAVE_SYMBOLS_FILE, test x$cv_support_symfile = "xyes")
+
+
 AC_ARG_ENABLE(unittest,
               AC_HELP_STRING([--enable-unittest=yes|no],
                             [enable the unittest. requires boost (default is yes)]),
@@ -153,7 +170,7 @@ case $build_vendor in
 	apple)
 		EXEMPI_PLATFORM_DEF=MAC_ENV
 		CPPFLAGS="$CPPFLAGS -I/Developer/Headers/FlatCarbon"
-		LDFLAGS="$LDFLAGS -framework CoreServices"
+		LDFLAGS="$LDFLAGS -framework CoreServices -framework QuickTime"
 		;;
 	*)
 		EXEMPI_PLATFORM_DEF=UNIX_ENV
@@ -180,9 +197,12 @@ dnl due to stupid m4 I had to double the [ and ] in the regexp
 fi
 AC_SUBST(VALGRIND)
 
+SHAVE_INIT
 
 AC_OUTPUT([
 Makefile
+shave
+shave-libtool
 third-party/Makefile
 third-party/MD5/Makefile
 source/Makefile
