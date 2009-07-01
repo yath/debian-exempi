@@ -7,8 +7,10 @@ exempi (2.1.1-1) UNRELEASED; urgency=low
   * debian/rules
     - Remove DEB_DH_INSTALL_SOURCEDIR, no longer required with debhelper v7
       compat mode.
+  * debian/patches/01-gcc_4.4_missing_includes.patch
+    - Removed, merged upstream.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 01 Jul 2009 14:41:01 +0200
+ -- Michael Biebl <biebl@debian.org>  Wed, 01 Jul 2009 14:44:33 +0200
 
 exempi (2.1.0-3) unstable; urgency=low
 
