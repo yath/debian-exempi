@@ -2,7 +2,7 @@ exempi (2.1.1-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * debian/control
-    - Bump Standards-Version to 3.8.1. No further changes.
+    - Bump Standards-Version to 3.8.2. No further changes.
     - Change section of libexempi3-dbg to debug.
   * debian/rules
     - Remove DEB_DH_INSTALL_SOURCEDIR, no longer required with debhelper v7
