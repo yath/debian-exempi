@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Asheesh Laroia <asheesh@asheesh.org>
 Uploaders: Michael Biebl <biebl@debian.org>
 Build-Depends: debhelper (>= 7.0.50~), libexpat1-dev, zlib1g-dev
-Standards-Version: 3.8.2
+Standards-Version: 3.9.1
 Vcs-Git: git://git.debian.org/collab-maint/exempi.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/exempi.git;a=summary
 Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
