@@ -5,6 +5,10 @@ exempi (2.1.1-2) UNRELEASED; urgency=low
     - Drop Build-Depends on quilt.
     - Remove /usr/share/cdbs/1/rules/patchsys-quilt.mk include.
     - Remove debian/README.source.
+  * Move from cdbs to dh
+    - Drop Build-Depends on cdbs.
+    - Bump Build-Depends on debhelper to (>= 7.0.50~) for override targets.
+    - Convert debian/rules to use dh.
 
  -- Michael Biebl <biebl@debian.org>  Sun, 05 Dec 2010 04:56:58 +0100
 
