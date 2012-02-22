@@ -1,3 +1,4 @@
 usr/include
 usr/lib/pkgconfig
-usr/lib/libexempi.{so,a}
+usr/lib/libexempi.a
+usr/lib/libexempi.so
