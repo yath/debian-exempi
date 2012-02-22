@@ -1,4 +1,4 @@
-exempi (2.2.0-1) UNRELEASED; urgency=low
+exempi (2.2.0-1) unstable; urgency=low
 
   * New upstream release.
   * Switch to source format 3.0 (quilt)
@@ -17,7 +17,7 @@ exempi (2.2.0-1) UNRELEASED; urgency=low
     flags and multiarch support.
   * Mark libexempi3, libexempi3-dev and libexempi-dev as Multi-Arch: same.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 22 Feb 2012 14:44:27 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 22 Feb 2012 14:57:56 +0100
 
 exempi (2.1.1-1) unstable; urgency=low
 
