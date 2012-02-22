@@ -13,8 +13,10 @@ exempi (2.2.0-1) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.9.2. No further changes.
   * Don't use brace expansion in .install files.
   * Bump shlibs due to API additions.
+  * Bump debhelper compatibility level to 9, which enables hardening build
+    flags and multiarch support.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 22 Feb 2012 14:26:22 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 22 Feb 2012 14:42:13 +0100
 
 exempi (2.1.1-1) unstable; urgency=low
 
