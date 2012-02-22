@@ -41,7 +41,7 @@ noinst_LTLIBRARIES = libxmpcommon.la
 INCLUDES = -I$(top_srcdir)/public/include \
 	-I$(top_srcdir)/public/include/client-glue
 
-AM_CXXFLAGS = -Wno-multichar -Wno-implicit -Wno-ctor-dtor-privacy \
+AM_CXXFLAGS = -Wno-multichar -Wno-ctor-dtor-privacy \
 	-funsigned-char -fexceptions
 AM_CPPFLAGS = \
 	-D@EXEMPI_PLATFORM_DEF@=1 -DXMP_IMPL=1 -DXMP_ClientBuild=0 \
@@ -54,4 +54,6 @@ noinst_HEADERS = UnicodeConversions.hpp ExpatAdapter.hpp EndianUtils.hpp\
 
 
 libxmpcommon_la_SOURCES = UnicodeInlines.incl_cpp UnicodeConversions.cpp\
-	XML_Node.cpp LargeFileAccess.cpp 
+	XML_Node.cpp LargeFileAccess.cpp \
+	XMP_LibUtils.hpp XMP_LibUtils.cpp \
+	$(NULL)
