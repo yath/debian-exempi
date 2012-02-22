@@ -15,8 +15,9 @@ exempi (2.2.0-1) UNRELEASED; urgency=low
   * Bump shlibs due to API additions.
   * Bump debhelper compatibility level to 9, which enables hardening build
     flags and multiarch support.
+  * Mark libexempi3, libexempi3-dev and libexempi-dev as Multi-Arch: same.
 
- -- Michael Biebl <biebl@debian.org>  Wed, 22 Feb 2012 14:42:13 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 22 Feb 2012 14:44:27 +0100
 
 exempi (2.1.1-1) unstable; urgency=low
 

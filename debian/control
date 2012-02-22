@@ -12,6 +12,8 @@ Homepage: http://libopenraw.freedesktop.org/wiki/Exempi
 Package: libexempi3
 Section: libs
 Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: library to parse XMP metadata (Library)
  Exempi is a library to parse XMP metadata as defined by the
@@ -24,6 +26,7 @@ Description: library to parse XMP metadata (Library)
 Package: libexempi-dev
 Section: libdevel
 Depends: libexempi3 (= ${binary:Version}), ${misc:Depends}
+Multi-Arch: same
 Architecture: any
 Description: library to parse XMP metadata (Development files)
  Exempi is a library to parse XMP metadata as defined by the
@@ -36,6 +39,7 @@ Description: library to parse XMP metadata (Development files)
 Package: libexempi3-dbg
 Section: debug
 Architecture: any
+Multi-Arch: same
 Priority: extra
 Depends: libexempi3 (= ${binary:Version}), ${misc:Depends}
 Description: library to parse XMP metadata (Debug files)
