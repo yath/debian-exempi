@@ -1,7 +1,7 @@
 /*
  * exempi - xmp.h
  *
- * Copyright (C) 2007-2008 Hubert Figuiere
+ * Copyright (C) 2007-2008,2012 Hubert Figuiere
  * Copyright 2002-2007 Adobe Systems Incorporated
  * All rights reserved.
  *
@@ -72,6 +72,8 @@ typedef enum {
 											  * don't use a smart handler. */
 	XMP_OPEN_LIMITSCANNING  = 0x00000080, /**< Only packet scan files "known" 
 										   * to need scanning. */
+	XMP_OPEN_REPAIR_FILE    = 0x00000100, /**< Attempt to repair a file opened for update, 
+										   * default is to not open (throw an exception). */
 	XMP_OPEN_INBACKGROUND   = 0x10000000  /**< Set if calling from background 
 										   * thread. */
 } XmpOpenFileOptions;
@@ -143,6 +145,24 @@ typedef enum {
 } XmpFileType;
 
 
+typedef enum {
+
+	XMP_FMT_CAN_INJECT_XMP = 0x00000001,
+	XMP_FMT_CAN_EXPAND = 0x00000002,
+	XMP_FMT_CAN_REWRITE = 0x00000004,
+	XMP_FMT_PREFERS_IN_PLACE = 0x00000008,
+	XMP_FMT_CAN_RECONCILE = 0x00000010,
+	XMP_FMT_ALLOWS_ONLY_XMP = 0x00000020,
+	XMP_FMT_RETURNS_RAW_PACKET = 0x00000040,
+	XMP_FMT_HANDLER_OWNS_FILE = 0x00000100,
+	XMP_FMT_ALLOW_SAFE_UPDATE = 0x00000200,
+	XMP_FMT_NEEDS_READONLY_PACKET = 0x00000400,
+	XMP_FMT_USE_SIDECAR_XMP = 0x00000800,
+	XMP_FMT_FOLDER_BASED_FORMAT = 0x00001000,
+
+	_XMP_FMT_LAST
+} XmpFileFormatOptions;
+
 
 
 typedef enum {
@@ -187,25 +207,25 @@ typedef enum {
 	XMP_PROP_HAS_LANG         = 0x00000040UL, /**< Implies XMP_PropHasQualifiers, 
 											   * property has xml:lang. */
 	XMP_PROP_HAS_TYPE         = 0x00000080UL, /**< Implies XMP_PropHasQualifiers, 
-											   * property has rdf:type. */
+						   * property has rdf:type. */
 	
 	/* Options relating to the data structure form. */
 	XMP_PROP_VALUE_IS_STRUCT = 0x00000100UL,  /**< The value is a structure 
-											   * with nested fields. */
+						   * with nested fields. */
 	XMP_PROP_VALUE_IS_ARRAY  = 0x00000200UL,  /**< The value is an array 
-											   * (RDF alt/bag/seq). */
+						   * (RDF alt/bag/seq). */
 	XMP_PROP_ARRAY_IS_UNORDERED = XMP_PROP_VALUE_IS_ARRAY,  /**< The item order 
-															 * does not matter.*/
+								 * does not matter.*/
 	XMP_PROP_ARRAY_IS_ORDERED = 0x00000400UL, /**< Implies XMP_PropValueIsArray,
-											   * item order matters. */
+						   * item order matters. */
 	XMP_PROP_ARRAY_IS_ALT    = 0x00000800UL,  /**< Implies XMP_PropArrayIsOrdered,
-											   * items are alternates. */
+						   * items are alternates. */
 	
 	/** Additional struct and array options. */
 	XMP_PROP_ARRAY_IS_ALTTEXT = 0x00001000UL,  /**< Implies kXMP_PropArrayIsAlternate,
-												* items are localized text. */
-	/* kXMP_InsertBeforeItem  = 0x00004000UL,  ! Used by SetXyz functions. */
-	/* kXMP_InsertAfterItem   = 0x00008000UL,  ! Used by SetXyz functions. */
+						    * items are localized text. */
+	XMP_PROP_ARRAY_INSERT_BEFORE = 0x00004000UL, /**< Used by array functions. */
+	XMP_PROP_ARRAY_INSERT_AFTER = 0x00008000UL,  /**< Used by array functions. */
 	
 	/* Other miscellaneous options. */
 	XMP_PROP_IS_ALIAS         = 0x00010000UL,  /**< This property is an alias name for another property. */
@@ -338,6 +358,17 @@ bool xmp_files_get_xmp(XmpFilePtr xf, XmpPtr xmp);
 bool xmp_files_can_put_xmp(XmpFilePtr xf, XmpPtr xmp);
 bool xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp);
 
+/** Get the file info from the open file
+ * @param xf the file object
+ * @param[out] filePath the file path object to store the path in. Pass NULL if not needed.
+ * @param[out] options the options for open. Pass NULL if not needed.
+ * @param[out] file_format the detected file format. Pass NULL if not needed.
+ * @param[out] handler_flags the format options like from %xmp_files_get_format_info.
+ * @return false in case of error.
+ */
+bool xmp_files_get_file_info(XmpFilePtr xf, XmpStringPtr filePath, XmpOpenFileOptions *options,
+	XmpFileType * file_format, XmpFileFormatOptions *handler_flags);
+
 /** Free a XmpFilePtr
  * @param xf the file ptr. Cannot be NULL
  * @return false on error.
@@ -345,6 +376,18 @@ bool xmp_files_put_xmp(XmpFilePtr xf, XmpPtr xmp);
  */
 bool xmp_files_free(XmpFilePtr xf);
 
+/** Get the format info 
+ * @param format type identifier
+ * @param option the options for the file format handler
+ * @return false on error
+ */
+bool xmp_files_get_format_info(XmpFileType format, XmpFileFormatOptions * options);
+
+/** Check the file format of a file. Use the same logic as in xmp_files_open()
+ * @param filePath the path to the file
+ * @return XMP_FT_UNKNOWN on error or if the file type is unknown
+ */
+XmpFileType xmp_files_check_file_format(const char *filePath);
 
 /** Register a new namespace to add properties to
  *  This is done automatically when reading the metadata block

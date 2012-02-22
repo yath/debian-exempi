@@ -39,10 +39,11 @@ noinst_PROGRAMS = xmpcoverage xmpfilescoverage dumpxmp dumpmainxmp\
 	customschema \
 	modifyingxmp \
 	readingxmp \
+	xmpcommandtool \
 	$(NULL)
 
 AM_CXXFLAGS = -fexceptions -funsigned-char -fPIC \
-	-Wno-multichar -Wno-implicit -Wno-ctor-dtor-privacy
+	-Wno-multichar -Wno-ctor-dtor-privacy
 
 AM_CPPFLAGS = -D@EXEMPI_PLATFORM_DEF@=1 -D_FILE_OFFSET_BITS=64
 XMPLIBS = $(top_builddir)/source/XMPCore/libXMPCore.la \
@@ -50,9 +51,14 @@ XMPLIBS = $(top_builddir)/source/XMPCore/libXMPCore.la \
 	$(top_builddir)/source/common/libxmpcommon.la -lexpat -lz \
 	$(top_builddir)/third-party/MD5/libmd5.la
 
-INCLUDES = -I$(top_srcdir)/public/include
+INCLUDES = -I$(top_srcdir)/public/include -I$(srcdir)/common -I$(top_srcdir)/source/common -I$(top_srcdir)/source/XMPFiles/FormatSupport
 
-noinst_HEADERS = XMPScanner.hpp
+noinst_LTLIBRARIES = libsamplescommon.la
+libsamplescommon_la_SOURCES = common/DumpFile.cpp common/DumpFile.h \
+	common/Log.cpp common/Log.h \
+	common/TagTree.cpp common/TagTree.h \
+	common/globals.h \
+	$(NULL)
 
 customschema_SOURCES = CustomSchema.cpp
 customschema_LDADD = $(XMPLIBS)
@@ -63,14 +69,20 @@ modifyingxmp_LDADD = $(XMPLIBS)
 readingxmp_SOURCES = ReadingXMP.cpp
 readingxmp_LDADD = $(XMPLIBS)
 
-xmpcoverage_SOURCES = XMPCoreCoverage.cpp XMPScanner.cpp
+xmpcoverage_SOURCES = XMPCoreCoverage.cpp
 xmpcoverage_LDADD = $(XMPLIBS)
 
 xmpfilescoverage_SOURCES = XMPFilesCoverage.cpp
 xmpfilescoverage_LDADD = $(XMPLIBS)
 
-dumpxmp_SOURCES = DumpScannedXMP.cpp XMPScanner.cpp
+dumpxmp_SOURCES = DumpScannedXMP.cpp
 dumpxmp_LDADD = $(XMPLIBS)
 
 dumpmainxmp_SOURCES = DumpMainXMP.cpp
 dumpmainxmp_LDADD = $(XMPLIBS)
+
+xmpcommandtool_SOURCES = xmpcommand/Actions.cpp xmpcommand/Actions.h \
+	xmpcommand/PrintUsage.cpp xmpcommand/PrintUsage.h \
+	xmpcommand/XMPCommand.cpp \
+	$(NULL)
+xmpcommandtool_LDADD = $(XMPLIBS) libsamplescommon.la
