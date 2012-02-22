@@ -1,5 +1,6 @@
-exempi (2.1.1-2) UNRELEASED; urgency=low
+exempi (2.2.0-1) UNRELEASED; urgency=low
 
+  * New upstream release.
   * Switch to source format 3.0 (quilt)
     - Add debian/source/format.
     - Drop Build-Depends on quilt.
@@ -11,7 +12,7 @@ exempi (2.1.1-2) UNRELEASED; urgency=low
     - Convert debian/rules to use dh.
   * Bump Standards-Version to 3.9.2. No further changes.
 
- -- Michael Biebl <biebl@debian.org>  Sun, 05 Dec 2010 04:56:58 +0100
+ -- Michael Biebl <biebl@debian.org>  Wed, 22 Feb 2012 14:26:22 +0100
 
 exempi (2.1.1-1) unstable; urgency=low
 
