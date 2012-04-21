@@ -1,0 +1,46 @@
+.TH EXEMPI 1
+.SH NAME
+exempi \- tool for dumping and modifying XMP metadata
+.SH SYNOPSIS
+.B exempi
+.RI [ options ] " <files>"
+.SH DESCRIPTION
+.B exempi
+is a tool for modifying or extracting the XMP metadata
+stream contained in various file formats, especially PDF
+and image files.
+.SH OPTIONS
+.TP
+.B \-x
+Dumps the raw XMP XML stream.
+.TP
+.B \-X
+Tells exempi that the given file is already an XMP file (as opposed
+to a, say, PDF document where the XMP stream has yet to be extracted).
+.TP
+.B \-R
+Do not reconcile XMP metadata with other metadata (PDF info dictionary,
+EXIF, ...)
+.TP
+.B \-o FILENAME
+Specify an output file.
+.TP
+.B \-w
+Write in-place. Only allowed when -s is used; must not be used with -o.
+.TP
+.B \-g PROPERTY
+Get the value of a property.
+.TP
+.B \-s PROPERTY \-v VALUE
+Set the value of a property.
+.TP
+.B \-h
+Display a help text.
+.SH AUTHOR
+.I exempi
+was written by Hubert Figuiere <hub@figuiere.net>, the
+.I Exempi
+library is based on the XMP SDK by Adobe Systems Incorporated.
+.PP
+This manual page was written by Sebastian Schmidt <yath@yath.de>
+for the Debian project (but may be used by others).
